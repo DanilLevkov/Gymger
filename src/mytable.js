@@ -6,18 +6,26 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import { Grid } from '@material-ui/core';
 import CardEvent from './cardevent';
 import PropTypes from 'prop-types';
 
 
-function Cell(props) {
+const columns = [
+    { id: 'md', label: 'Monday' },
+    { id: 'tu', label: 'Tuesday' },
+    { id: 'wd', label: 'Wednesday' },
+    { id: 'th', label: 'Monday' },
+    { id: 'fr', label: 'Monday' },
+    { id: 'st', label: 'Monday' },
+    { id: 'sd', label: 'Monday' },
+];
+
+function CellContent(props) {
     const { items } = props;
     return (
         <React.Fragment>
-            <TableCell align="center">
                 <Grid container item xs={12} spacing={2}>
                     {items.map((event) => (
                         <Grid item xs={12} sm={12}>
@@ -25,13 +33,12 @@ function Cell(props) {
                         </Grid>
                     ))}
                 </Grid>
-            </TableCell>
         </React.Fragment>
     );
 }
 
 
-Cell.propTypes = {
+CellContent.propTypes = {
     items: PropTypes.arrayOf(
         PropTypes.shape({
             title: PropTypes.strig.isRequired,
@@ -50,13 +57,24 @@ function Row(props) {
                 <TableCell component="th" scope="row">
                     {row.time}
                 </TableCell>
-                <TableCell align="center"><Cell props={row.md}> </Cell> </TableCell>
+                {/* <TableCell align="center"><Cell props={row.md}> </Cell> </TableCell>
                 <TableCell align="center"><Cell props={row.tu}> </Cell> </TableCell>
                 <TableCell align="center"><Cell props={row.wd}> </Cell> </TableCell>
                 <TableCell align="center"><Cell props={row.th}> </Cell> </TableCell>
                 <TableCell align="center"><Cell props={row.fr}> </Cell> </TableCell>
                 <TableCell align="center"><Cell props={row.st}> </Cell> </TableCell>
-                <TableCell align="center"><Cell props={row.sd}> </Cell> </TableCell>
+                <TableCell align="center"><Cell props={row.sd}> </Cell> </TableCell> */}
+
+
+                {columns.map((column) => {
+                    //const value = row[column.id];
+                    return (
+                        <TableCell key={column.id} align="center">
+                            <CellContent props={row[column.id]} />
+                        </TableCell>
+                    );
+                })}
+
             </TableRow>
         </React.Fragment>
     );
@@ -85,105 +103,9 @@ const useStyles = makeStyles({
     },
 });
 
-const columns = [
-    { id: 'md', label: 'Monday' },
-    { id: 'tu', label: 'Tuesday' },
-    { id: 'wd', label: 'Monday' },
-    { id: 'th', label: 'Monday' },
-    { id: 'fr', label: 'Monday' },
-    { id: 'st', label: 'Monday' },
-    { id: 'sd', label: 'Monday' },
-];
-
-const rows = [
-    {
-        time: '18:30',
-        md: [
-            {
-                tiltle: "Gym",
-                image_url: "https://source.unsplash.com/random/?science",
-                short_info: "Some info",
-            },
-            {
-                tiltle: "Gym2",
-                image_url: "https://source.unsplash.com/random/?science",
-                short_info: "Some info2",
-            },
-        ],
-        wd: [
-            {
-                tiltle: "Gym Wen",
-                image_url: "https://source.unsplash.com/random/?computer",
-                short_info: "Some info",
-            },
-            {
-                tiltle: "Gym yuuuf",
-                image_url: "https://source.unsplash.com/random/?computer",
-                short_info: "Some info2",
-            },
-        ],
-        fr: [
-            {
-                tiltle: "Lazy",
-                image_url: "https://source.unsplash.com/random/?computer",
-                short_info: "Some info lazy",
-            },
-        ]
-    },
-    {
-        time: '12:30',
-        md: [
-            {
-                tiltle: "Gym morning",
-                image_url: "https://source.unsplash.com/random/?science",
-                short_info: "Some info",
-            },
-            {
-                tiltle: "Gym2",
-                image_url: "https://source.unsplash.com/random/?science",
-                short_info: "Some info2",
-            },
-        ],
-        wd: [
-            {
-                tiltle: "Gym Wen",
-                image_url: "https://source.unsplash.com/random/?computer",
-                short_info: "Some info",
-            },
-            {
-                tiltle: "Gym yuuuf",
-                image_url: "https://source.unsplash.com/random/?computer",
-                short_info: "Some info2",
-            },
-        ],
-        fr: [
-            {
-                tiltle: "Lazy",
-                image_url: "https://source.unsplash.com/random/?computer",
-                short_info: "Some info lazy",
-            },
-        ]
-    },
-];
-
-//Сортировка
-rows.sort((a, b) => a.time > b.time);
-
-export default function StickyHeadTable(props) {
-    //const { rows } = props;
+export default function MyTable(props) {
+    const { rows } = props;
     const classes = useStyles();
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
-
     return (
         <Paper className={classes.root}>
             <TableContainer className={classes.container}>
@@ -207,36 +129,9 @@ export default function StickyHeadTable(props) {
                         {rows.map((row) => (
                             <Row key={row.time} row={row} />
                         ))}
-
-
-
-                        <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                            <TableCell component="th" scope="row">
-                                {row.time}
-                            </TableCell>
-                            {columns.map((column) => {
-                                const value = row[column.id];
-                                return (
-                                    <TableCell key={column.id} align={column.align}>
-                                        {column.format && typeof value === 'number' ? column.format(value) : value}
-                                    </TableCell>
-                                );
-                            })}
-                        </TableRow>
-
-
                     </TableBody>
                 </Table>
             </TableContainer>
-            <TablePagination
-                rowsPerPageOptions={[10, 25, 100]}
-                component="div"
-                count={rows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
-            />
         </Paper>
     );
 }
