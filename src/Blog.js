@@ -104,7 +104,7 @@ export default function Blog() {
         <Grid container xs={6} sm={12} md={12}>
             <Sidebar date={"fgf"} format={"fgbfn"} where={"mk"} price={"kjbjh"} time={"jhbjh"} />
         </Grid>
-         <MyTable props={rows}/>
+         <MyTable rows={rows} />
       </Container>
     </React.Fragment>
   );

@@ -23,11 +23,11 @@ const columns = [
 ];
 
 function CellContent(props) {
-    const { items } = props;
+    const { cell } = props;
     return (
         <React.Fragment>
                 <Grid container item xs={12} spacing={2}>
-                    {items.map((event) => (
+                    {cell.map((event) => (
                         <Grid item xs={12} sm={12}>
                             <CardEvent title={event.title} image_url={event.image_url} short_info={event.short_info} />
                         </Grid>
@@ -38,15 +38,15 @@ function CellContent(props) {
 }
 
 
-CellContent.propTypes = {
-    items: PropTypes.arrayOf(
-        PropTypes.shape({
-            title: PropTypes.strig.isRequired,
-            image_url: PropTypes.strig.isRequired,
-            short_info: PropTypes.strig.isRequired,
-        }),
-    ).isRequired,
-};
+// CellContent.propTypes = {
+//     items: PropTypes.arrayOf(
+//         PropTypes.shape({
+//             title: PropTypes.strig.isRequired,
+//             image_url: PropTypes.strig.isRequired,
+//             short_info: PropTypes.strig.isRequired,
+//         }),
+//     ).isRequired,
+// };
 
 
 function Row(props) {
@@ -65,12 +65,11 @@ function Row(props) {
                 <TableCell align="center"><Cell props={row.st}> </Cell> </TableCell>
                 <TableCell align="center"><Cell props={row.sd}> </Cell> </TableCell> */}
 
-
                 {columns.map((column) => {
-                    //const value = row[column.id];
+                    const value = row[column.id];
                     return (
                         <TableCell key={column.id} align="center">
-                            <CellContent props={row[column.id]} />
+                            <CellContent cell={value} />
                         </TableCell>
                     );
                 })}
@@ -80,18 +79,18 @@ function Row(props) {
     );
 }
 
-Row.propTypes = {
-    row: PropTypes.shape({
-        time: PropTypes.string.isRequired,
-        md: PropTypes.string.isRequired,
-        tu: PropTypes.string.isRequired,
-        wd: PropTypes.string.isRequired,
-        th: PropTypes.string.isRequired,
-        fr: PropTypes.string.isRequired,
-        st: PropTypes.string.isRequired,
-        sd: PropTypes.string.isRequired,
-    }).isRequired,
-};
+// Row.propTypes = {
+//     row: PropTypes.shape({
+//         time: PropTypes.string.isRequired,
+//         md: PropTypes.string.isRequired,
+//         tu: PropTypes.string.isRequired,
+//         wd: PropTypes.string.isRequired,
+//         th: PropTypes.string.isRequired,
+//         fr: PropTypes.string.isRequired,
+//         st: PropTypes.string.isRequired,
+//         sd: PropTypes.string.isRequired,
+//     }).isRequired,
+// };
 
 
 const useStyles = makeStyles({
@@ -104,7 +103,7 @@ const useStyles = makeStyles({
 });
 
 export default function MyTable(props) {
-    const { rows } = props;
+    const {rows} = props;
     const classes = useStyles();
     return (
         <Paper className={classes.root}>
@@ -127,7 +126,7 @@ export default function MyTable(props) {
                     </TableHead>
                     <TableBody>
                         {rows.map((row) => (
-                            <Row key={row.time} row={row} />
+                            <Row row={row} />
                         ))}
                     </TableBody>
                 </Table>
