@@ -5,6 +5,7 @@ import Header from './Header';
 import Sidebar from './Sidebar';
 import { Grid } from '@material-ui/core';
 import MyTable from './mytable'
+import { makeStyles } from '@material-ui/core/styles';
 
 const sections = [
   { title: 'Конференции', url: '#' },
@@ -137,9 +138,18 @@ const rows = [
 rows.sort((a, b) => a.time > b.time);
 
 
+const GridStyles = makeStyles({
+  grid: {
+      width: '100%',
+      padding: 10,
+  },
+  container: {
+      maxHeight: '100%',
+  },
+});
 
 export default function Blog() {
-
+  const classes = GridStyles();
   return (
     <React.Fragment>
       <CssBaseline />
