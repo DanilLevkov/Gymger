@@ -52,14 +52,6 @@ export default function Sidebar() {
 
         </Grid>
         </form>
-        
-
-      <div className={classes.buttonsSide}>
-      <Typography
-          align="left">
-        <Button variant="contained" color="secondary" >Применить</Button>
-      </Typography>
-      </div>
      
      </Paper>  
     </Grid>

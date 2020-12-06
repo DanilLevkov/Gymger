@@ -26,7 +26,7 @@ function CellContent(props) {
     const { cell } = props;
     return (
         <React.Fragment>
-            <Grid container direction="column" justify="flex-start" alignItems="center" spacing={1}>
+            <Grid container direction="column" justify="flex-start" alignItems="center" spacing={1} padding={3}>
                 {cell.map((event) => (
                     <Grid item alignContent="center">
                         {/* <CardEvent title={event.title} image_url={event.image_url} short_info={event.short_info} /> */}
@@ -53,6 +53,8 @@ const CellStyles = makeStyles({
     root: {
         verticalAlign: "top",
         padding: 8,
+        paddingLeft: 0,
+        scrollPaddingRight: 0,
     },
 });
 

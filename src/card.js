@@ -5,11 +5,11 @@ import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { CardActionArea, Grid, Paper } from '@material-ui/core';
+import { Button, CardActionArea, Grid, Paper } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        width: 156,
+        width: 161,
         padding: 8,
     },
     expand: {
@@ -70,6 +70,14 @@ export default function GymCard(props) {
                         Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10
                         minutes.
                     </Typography>
+                    <Grid contaner spacing={30} >
+                        <Grid item sx={12} padding={20}>
+                            <Button size="small" variant="contained" color="secondary" >пойду</Button>
+                        </Grid>
+                        <Grid item sx={12}>
+                            <Button size="small" variant="contained" color="secondary" >пойду</Button>
+                        </Grid>
+                    </Grid>
                 </Collapse>
             </Paper>
         </CardActionArea>
