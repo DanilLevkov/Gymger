@@ -13,8 +13,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 280,
-    height: 300,
+    maxWidth: 180,
+    height: 180,
 
   },
   buttonsSide: {
@@ -37,7 +37,7 @@ export default function CardEvent(props) {
         <CardMedia
           component="img"
           alt="Contemplative Reptile"
-          height="140"
+          height="50%"
           image={image_url}
           title="Contemplative Reptile"
         />
