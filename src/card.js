@@ -59,7 +59,7 @@ export default function GymCard(props) {
                             {lesson.title}
                         </Typography>
                     </Grid>
-                    <Grid item xs={0.1}>
+                    <Grid item xs={1}>
                         <Badge
                             showZero
                             badgeContent={lesson.vacant}
