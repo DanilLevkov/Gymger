@@ -31,12 +31,6 @@ export default function Sidebar() {
         <form className={classes.form} noValidate>
         <Grid container spacing={0}>
         <Grid item xs={12} sm={12}>
-        <Typography align="left" component="h1" variant="h6">
-        Формат мероприятия
-        </Typography>
-        </Grid>
-        
-        <Grid item xs={12} sm={12}>
         <FormControlLabel
         control={<Checkbox value="hak" size="small" color="secondary" />}
         label="Очное"

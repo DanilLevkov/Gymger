@@ -7,7 +7,6 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { Grid } from '@material-ui/core';
-import CardEvent from './cardevent';
 import GymCard from './card';
 
 
@@ -29,7 +28,6 @@ function CellContent(props) {
             <Grid container direction="column" justify="flex-start" alignItems="center" spacing={1} padding={3}>
                 {cell.map((event) => (
                     <Grid item alignContent="center">
-                        {/* <CardEvent title={event.title} image_url={event.image_url} short_info={event.short_info} /> */}
                         <GymCard lesson={event}/>
                     </Grid>
                 ))}

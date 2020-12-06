@@ -5,7 +5,7 @@ import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Button, CardActionArea, Grid, Paper } from '@material-ui/core';
+import { Badge, Button, CardActionArea, Grid, Paper } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -22,13 +22,30 @@ const useStyles = makeStyles((theme) => ({
     expandOpen: {
         transform: 'rotate(180deg)',
     },
+    badge: {
+        /*  position: "relative", */
+        top: -10,
+        right: 5,
+        padding: '0 4px',
+    },
+    GridContaner: {
+        width: "110%",
+    }
 }));
+
 
 export default function GymCard(props) {
     const { lesson } = props;
+    var color2;
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
-
+    if (lesson.vacant > 10) {
+        color2 = "primary";
+    } else if (lesson.vacant > 3) {
+        color2 = "error";
+    } else {
+        color2 = "secondary";
+    }
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
@@ -36,9 +53,21 @@ export default function GymCard(props) {
     return (
         <CardActionArea>
             <Paper className={classes.root}>
-                <Typography variant="h5" >
-                    {lesson.title}
-                </Typography>
+                <Grid container className={classes.GridContaner}>
+                    <Grid item xs={11}>
+                        <Typography variant="h5" >
+                            {lesson.title}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={0.1}>
+                        <Badge
+                            showZero
+                            badgeContent={lesson.vacant}
+                            color={color2}
+                            className={classes.badge}>
+                        </Badge>
+                    </Grid>
+                </Grid>
                 <Grid container>
                     <Grid item xs={8}>
                         <Typography variant="h7" color="textSecondary">
@@ -66,18 +95,9 @@ export default function GymCard(props) {
                     <Typography paragraph>
                         {lesson.short_info}
                     </Typography>
-                    <Typography paragraph>
-                        Heat 1/2 cup of the broth in a pot until simmering, add saffron and set aside for 10
-                        minutes.
-                    </Typography>
-                    <Grid contaner spacing={30} >
-                        <Grid item sx={12} padding={20}>
-                            <Button size="small" variant="contained" color="secondary" >пойду</Button>
-                        </Grid>
-                        <Grid item sx={12}>
-                            <Button size="small" variant="contained" color="secondary" >пойду</Button>
-                        </Grid>
-                    </Grid>
+                    <div style={{ margin: 10 }}>
+                        <Button size="medium" variant="contained" color="secondary" >пойду</Button>
+                    </div>
                 </Collapse>
             </Paper>
         </CardActionArea>
