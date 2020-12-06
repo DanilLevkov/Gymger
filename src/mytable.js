@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -9,6 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { Grid } from '@material-ui/core';
 import CardEvent from './cardevent';
+import GymCard from './card';
 
 
 
@@ -26,10 +26,11 @@ function CellContent(props) {
     const { cell } = props;
     return (
         <React.Fragment>
-            <Grid container item xs={12} spacing={2}>
+            <Grid container direction="column" justify="flex-start" alignItems="center" spacing={1}>
                 {cell.map((event) => (
-                    <Grid item xs={12} sm={12}>
-                        <CardEvent title={event.title} image_url={event.image_url} short_info={event.short_info} />
+                    <Grid item alignContent="center">
+                        {/* <CardEvent title={event.title} image_url={event.image_url} short_info={event.short_info} /> */}
+                        <GymCard lesson={event}/>
                     </Grid>
                 ))}
             </Grid>
@@ -48,27 +49,34 @@ function CellContent(props) {
     ).isRequired,
 }; */
 
+const CellStyles = makeStyles({
+    root: {
+        verticalAlign: "top",
+        padding: 8,
+    },
+});
 
 function Row(props) {
+    const classes = CellStyles();
     const { row } = props;
     return (
         <React.Fragment>
             <TableRow>
-                <TableCell component="th" scope="row">
+                <TableCell component="th" scope="row" width="30px">
                     {row.time}
                 </TableCell>
 
                 {columns.map((column) => {
                     const value = row[column.id];
                     return (
-                        <TableCell key={column.id} align="center">
+                        <TableCell key={column.id} className={classes.root} >
                             {typeof value === 'object' ? <CellContent cell={value} /> : ''}
                         </TableCell>
                     );
                 })}
 
             </TableRow>
-        </React.Fragment>
+        </React.Fragment >
     );
 }
 
@@ -87,22 +95,20 @@ function Row(props) {
 
 
 const TableStyles = makeStyles({
-    paper: {
-        width: '100%',
-        padding: 10,
-    },
     container: {
-        maxHeight: '100%',
+        width: "1260px"
     },
+    table:{
+
+    }
 });
 
 export default function MyTable(props) {
     const { rows } = props;
     const classes = TableStyles();
     return (
-        <Paper className={classes.paper}>
             <TableContainer className={classes.container}>
-                <Table responsive={false} stickyHeader aria-label="sticky table">
+                <Table stickyHeader aria-label="sticky table" className={classes.table}>
                     <TableHead>
                         <TableRow>
                             <TableCell>
@@ -125,6 +131,5 @@ export default function MyTable(props) {
                     </TableBody>
                 </Table>
             </TableContainer>
-        </Paper>
     );
 }

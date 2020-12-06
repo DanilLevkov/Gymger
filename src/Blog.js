@@ -3,58 +3,81 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Header from './Header';
 import Sidebar from './Sidebar';
-import { Grid } from '@material-ui/core';
+import { Grid, Paper } from '@material-ui/core';
 import MyTable from './mytable'
 import { makeStyles } from '@material-ui/core/styles';
-
-const sections = [
-  { title: 'Конференции', url: '#' },
-  { title: 'Хакатоны', url: '#' },
-  { title: 'Вебинары', url: '#' },
-  { title: 'Форумы', url: '#' },
-  { title: 'Онлайн-курсы', url: '#' },
-  { title: 'Стажировки', url: '#' },
-  { title: 'Семинары', url: '#' },
-  { title: 'Лекции', url: '#' },
-];
 
 
 const rows = [
   {
     time: '18:30',
-    tu: [],
-    th: [],
-    st: [],
-    sd: [],
+    tu: [{
+      title: "Gym2",
+      hall: "Зал 1",
+      time: '18:30-19:30',
+      image_url: "https://source.unsplash.com/random/?science",
+      short_info: "Some info2",
+    },],
+    th: [{
+      title: "Gym2",
+      hall: "Зал 1",
+      time: '18:30',
+      image_url: "https://source.unsplash.com/random/?science",
+      short_info: "Some info2",
+    },],
+    st: [{
+      title: "Gym2",
+      hall: "Зал 1",
+      time: '18:30',
+      image_url: "https://source.unsplash.com/random/?science",
+      short_info: "Some info2",
+    },],
+    sd: [{
+      title: "Gym2",
+      hall: "Зал 1",
+      time: '18:30',
+      image_url: "https://source.unsplash.com/random/?science",
+      short_info: "Some info2",
+    },],
     md: [
       {
-        tiltle: "Gym",
+        title: "Gym",
+        hall: "Зал 1",
+        time: '18:30',
         image_url: "https://source.unsplash.com/random/?science",
         short_info: "Some info",
       },
       {
-        tiltle: "Gym2",
+        title: "Gym2",
+        hall: "Зал 1",
+        time: '18:30',
         image_url: "https://source.unsplash.com/random/?science",
         short_info: "Some info2",
       },
     ],
     wd: [
       {
-        tiltle: "Gym Wen",
+        title: "Gym Wen",
+        hall: "Зал 1",
+        time: '18:30',
         image_url: "https://source.unsplash.com/random/?computer",
         short_info: "Some info",
       },
       {
-        tiltle: "Gym yuuuf",
+        title: "Gym yuuuf",
+        hall: "Зал 1",
         image_url: "https://source.unsplash.com/random/?computer",
         short_info: "Some info2",
+        time: '18:30',
       },
     ],
     fr: [
       {
-        tiltle: "Lazy",
+        title: "Lazy",
+        hall: "Зал 1",
         image_url: "https://source.unsplash.com/random/?computer",
         short_info: "Some info lazy",
+        time: '18:30',
       },
     ]
   },
@@ -66,33 +89,43 @@ const rows = [
     md: [],
     sd: [
       {
-        tiltle: "Gym morning",
+        title: "Gym morning",
+        hall: "Зал 1",
         image_url: "https://source.unsplash.com/random/?science",
         short_info: "Some info",
+        time: '12:30',
       },
       {
-        tiltle: "Gym2",
+        title: "Gym Long Long Long name",
+        hall: "Зал 1",
         image_url: "https://source.unsplash.com/random/?science",
         short_info: "Some info2",
+        time: '12:30',
       },
     ],
     wd: [
       {
-        tiltle: "Gym Wen",
+        title: "Gym Wen",
+        hall: "Зал 1",
         image_url: "https://source.unsplash.com/random/?computer",
         short_info: "Some info",
+        time: '12:30',
       },
       {
-        tiltle: "Gym yuuuf",
+        title: "Gym yuuuf",
+        hall: "Зал 1",
         image_url: "https://source.unsplash.com/random/?computer",
         short_info: "Some info2",
+        time: '12:30',
       },
     ],
     fr: [
       {
-        tiltle: "Lazy",
+        title: "Lazy",
+        hall: "Зал 1",
         image_url: "https://source.unsplash.com/random/?computer",
         short_info: "Some info lazy",
+        time: '12:30',
       },
     ]
   },
@@ -102,33 +135,38 @@ const rows = [
     sd: [],
     md: [
       {
-        tiltle: "Gym morning",
+        title: "Gym morning",
         image_url: "https://source.unsplash.com/random/?science",
         short_info: "Some info",
+        time: '14:30',
       },
       {
-        tiltle: "Gym2",
+        title: "Gym2",
         image_url: "https://source.unsplash.com/random/?science",
         short_info: "Some info2",
+        time: '14:30',
       },
     ],
     wd: [
       {
-        tiltle: "Gym Wen",
+        title: "Gym Wen",
         image_url: "https://source.unsplash.com/random/?computer",
         short_info: "Some info",
+        time: '14:30',
       },
       {
-        tiltle: "Gym yuuuf",
+        title: "Gym yuuuf",
         image_url: "https://source.unsplash.com/random/?computer",
         short_info: "Some info2",
+        time: '14:30',
       },
     ],
     fr: [
       {
-        tiltle: "Lazy",
+        title: "Lazy",
         image_url: "https://source.unsplash.com/random/?computer",
         short_info: "Some info lazy",
+        time: '14:30',
       },
     ]
   },
@@ -139,12 +177,15 @@ rows.sort((a, b) => a.time > b.time);
 
 
 const GridStyles = makeStyles({
-  grid: {
-      width: '100%',
-      padding: 10,
+  headContaner: {
+    maxWidth: '100%',
+    height: "100px"
   },
-  container: {
-      maxHeight: '100%',
+  mainContaner: {
+    padding: "0"
+  },
+  paper: {
+    width: "1300px",
   },
 });
 
@@ -153,13 +194,25 @@ export default function Blog() {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Container maxWidth="lg">
-        <Header sections={sections} />
-        <Grid container xs={6} sm={12} md={12}>
-          <Sidebar date={"fgf"} format={"fgbfn"} where={"mk"} price={"kjbjh"} time={"jhbjh"} />
-        </Grid>
-        <MyTable rows={rows} />
+      <Container className={classes.headContaner}>
+        <Header />
       </Container>
+      <Container className={classes.mainContaner}>
+        <Paper elevation="3" className={classes.paper}>
+          <Grid container spacing={2} direction="column" justify="flex-start" alignItems="center">
+            <Grid item >
+              <Sidebar />
+            </Grid>
+            <Grid item>
+              <MyTable rows={rows} />
+            </Grid>
+          </Grid>
+        </Paper>
+      </Container>
+
+      <Paper width="100%">
+        Some add info
+    </Paper>
     </React.Fragment>
   );
 }

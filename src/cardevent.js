@@ -14,7 +14,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 180,
-    height: 180,
+    height: 200,
 
   },
   buttonsSide: {
