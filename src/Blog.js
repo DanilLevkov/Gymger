@@ -6,11 +6,10 @@ import Sidebar from './Sidebar';
 import { Grid, Paper } from '@material-ui/core';
 import MyTable from './mytable'
 import { makeStyles } from '@material-ui/core/styles';
-import {rows} from './data'
-
+import { rows } from './data'
 
 //Сортировка
-const rows2=rows.sort((a, b) => a.time > b.time);
+const rows2 = rows.sort((a, b) => a.time > b.time);
 
 
 const GridStyles = makeStyles({
@@ -34,6 +33,9 @@ export default function Blog() {
       <Container className={classes.headContaner}>
         <Header />
       </Container>
+
+
+
       <Container className={classes.mainContaner}>
         <Paper elevation="3" className={classes.paper}>
           <Grid container spacing={2} direction="column" justify="flex-start" alignItems="center">

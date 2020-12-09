@@ -4,12 +4,11 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { Grid } from '@material-ui/core';
 import GymCard from './card';
-
-
+import { HeadofTable } from "./tableHead";
+import { StickyContainer, Sticky } from 'react-sticky';
 
 const columns = [
     { id: 'md', label: 'Понедельник' },
@@ -28,7 +27,7 @@ function CellContent(props) {
             <Grid container direction="column" justify="flex-start" alignItems="center" spacing={1} padding={3}>
                 {cell.map((event) => (
                     <Grid item alignContent="center">
-                        <GymCard lesson={event}/>
+                        <GymCard lesson={event} />
                     </Grid>
                 ))}
             </Grid>
@@ -98,7 +97,7 @@ const TableStyles = makeStyles({
     container: {
         width: "1260px"
     },
-    table:{
+    table: {
 
     }
 });
@@ -107,29 +106,21 @@ export default function MyTable(props) {
     const { rows } = props;
     const classes = TableStyles();
     return (
-            <TableContainer className={classes.container}>
-                <Table stickyHeader aria-label="sticky table" className={classes.table}>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>
-                                Time
-                            </TableCell >
-                            {columns.map((column) => (
-                                <TableCell
-                                    key={column.id}
-                                    align={"center"}
-                                >
-                                    {column.label}
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                    </TableHead>
+        <TableContainer className={classes.container}>
+            <Table stickyHeader aria-label="sticky table" className={classes.table}>
+                <StickyContainer className="container">
+                    <Sticky>
+                        {({ style }) => (
+                            <HeadofTable style={style} columns={columns} />
+                        )}
+                    </Sticky>
                     <TableBody>
                         {rows.map((row) => (
                             <Row row={row} />
                         ))}
                     </TableBody>
-                </Table>
-            </TableContainer>
+                </StickyContainer>
+            </Table>
+        </TableContainer>
     );
 }
