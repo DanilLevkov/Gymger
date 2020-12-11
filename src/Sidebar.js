@@ -1,39 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { Divider, FormControl, FormGroup, Input, InputLabel, ListItemText, ListSubheader, MenuItem, Select } from '@material-ui/core';
 
-const gyms = [
-  {
-    type: 'Растяжка',
-    items: [
-      { name: "Йога", isChecked: true },
-      { name: "Пилатес", isChecked: true },
-      { name: "Бентч", isChecked: true },
-    ]
-  },
-  {
-    type: 'Силовые',
-    items: [
-      { name: "Hot Iron", isChecked: true },
-      { name: "Crossfet", isChecked: true },
-      { name: "Math Ball", isChecked: true },
-    ]
-  },
-  {
-    type: 'Бассейн',
-    items: [
-      { name: "Водные процедуры", isChecked: true },
-      { name: "Ныряние", isChecked: true },
-    ]
-  },
-];
 
 const useStyles = makeStyles((theme) => ({
   contaner: {

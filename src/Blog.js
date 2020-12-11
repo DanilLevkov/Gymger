@@ -2,14 +2,9 @@ import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Header from './Header';
-import Sidebar from './Sidebar';
 import { Grid, Paper } from '@material-ui/core';
 import MyTable from './mytable'
 import { makeStyles } from '@material-ui/core/styles';
-import { rows } from './data'
-
-//Сортировка
-const rows2 = rows.sort((a, b) => a.time > b.time);
 
 
 const GridStyles = makeStyles({
@@ -27,21 +22,21 @@ const GridStyles = makeStyles({
 
 export default function Blog() {
   const classes = GridStyles();
+  const [stateDifficulty, setDifficulty] = React.useState({
+    checkedLittle: true,
+    checkedMiddle: true,
+    checkedBig: true,
+  });
   return (
     <React.Fragment>
       <CssBaseline />
       <Container className={classes.headContaner}>
         <Header />
       </Container>
-
-
-
       <Container className={classes.mainContaner}>
         <Paper elevation="3" className={classes.paper}>
-          <Grid container direction="column" justify="flex-start" alignItems="center">
-              <Sidebar />
-              <MyTable rows={rows2} />
-          </Grid>
+             {/*  <Sidebar /> */}
+              <MyTable />
         </Paper>
       </Container>
 

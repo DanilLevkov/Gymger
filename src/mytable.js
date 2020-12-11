@@ -5,20 +5,45 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
-import { Grid } from '@material-ui/core';
 import GymCard from './card';
 import { HeadofTable } from "./tableHead";
 import { StickyContainer, Sticky } from 'react-sticky';
+import { getColumns, getGyms, getRows } from './data'
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import { Divider, FormControl, FormGroup, Input, InputLabel, ListItemText, ListSubheader, MenuItem, Select } from '@material-ui/core';
 
-const columns = [
-    { id: 'md', label: 'Понедельник' },
-    { id: 'tu', label: 'Вторник' },
-    { id: 'wd', label: 'Среда' },
-    { id: 'th', label: 'Четверг' },
-    { id: 'fr', label: 'Пятница' },
-    { id: 'st', label: 'Суббота' },
-    { id: 'sd', label: 'Воскресенье' },
-];
+
+//Сортировка
+//const rows2 = rows.sort((a, b) => a.time > b.time);
+const rows2 = getRows();
+const columns = getColumns();
+const gyms = getGyms();
+
+function CellFill(props) {
+    const { event } = props;
+    if (props.stateDifficulty[event.difficulty] === true) {
+        if ((props.allAlowd) || (props.personName.indexOf(event.label) > -1)) {
+            return (
+                <Grid item alignContent="center">
+                    <GymCard lesson={event} />
+                </Grid>
+            )
+        }
+    }
+    else {
+        return (
+            <Grid item alignContent="center">
+                <div dar={event} style={{ width: "161px" }}> </div>
+            </Grid>
+        )
+    }
+}
+
+
 
 function CellContent(props) {
     const { cell } = props;
@@ -26,25 +51,13 @@ function CellContent(props) {
         <React.Fragment>
             <Grid container direction="column" justify="flex-start" alignItems="center" spacing={1} padding={3}>
                 {cell.map((event) => (
-                    <Grid item alignContent="center">
-                        <GymCard lesson={event} />
-                    </Grid>
+                    <CellFill event={event} allAlowd={props.allAlowd} stateDifficulty={props.stateDifficulty} personName={props.personName} />
                 ))}
             </Grid>
         </React.Fragment>
     );
 }
 
-
-/* CellContent.propTypes = {
-    items: PropTypes.arrayOf(
-        PropTypes.shape({
-            title: PropTypes.strig.isRequired,
-            image_url: PropTypes.strig.isRequired,
-            short_info: PropTypes.strig.isRequired,
-        }),
-    ).isRequired,
-}; */
 
 const CellStyles = makeStyles({
     root: {
@@ -69,7 +82,7 @@ function Row(props) {
                     const value = row[column.id];
                     return (
                         <TableCell key={column.id} className={classes.root} >
-                            {typeof value === 'object' ? <CellContent cell={value} /> : ''}
+                            {typeof value === 'object' ? <CellContent cell={value} allAlowd={props.allAlowd} stateDifficulty={props.stateDifficulty} personName={props.personName} /> : ''}
                         </TableCell>
                     );
                 })}
@@ -78,19 +91,6 @@ function Row(props) {
         </React.Fragment >
     );
 }
-
-/*Row.propTypes = {
-    row: PropTypes.shape({
-        time: PropTypes.string.isRequired,
-        md: PropTypes.string.isRequired,
-        tu: PropTypes.string.isRequired,
-        wd: PropTypes.string.isRequired,
-        th: PropTypes.string.isRequired,
-        fr: PropTypes.string.isRequired,
-        st: PropTypes.string.isRequired,
-        sd: PropTypes.string.isRequired,
-    }).isRequired,
-};*/
 
 
 const TableStyles = makeStyles({
@@ -102,25 +102,151 @@ const TableStyles = makeStyles({
     }
 });
 
-export default function MyTable(props) {
-    const { rows } = props;
-    const classes = TableStyles();
+
+
+const useStyles = makeStyles((theme) => ({
+    contaner: {
+        padding: "20px",
+    },
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 320, // Ширина коробочки ввода
+        maxWidth: 1000,
+    },
+}));
+
+const ITEM_HEIGHT = 100; // высота выпадающего списка
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 300
+        }
+    }
+};
+
+
+
+export default function MyTable() {
+    const classes2 = TableStyles();
+    const classes = useStyles();
+    const [personName, setPersonName] = React.useState([]);
+    const [allAlowd, setallAlowd] = React.useState(true);
+    const [stateDifficulty, setState] = React.useState({
+        checkedLittle: true,
+        checkedMiddle: true,
+        checkedBig: true,
+    });
+
+    const changesDifficulty = (event) => {
+        setState({ ...stateDifficulty, [event.target.name]: event.target.checked });
+    };
+
+    const handleChange = (event) => {
+        if (event.target.value.indexOf("exit") > -1) {
+            setPersonName([]);
+            setallAlowd(true);
+        }
+        else {
+            setPersonName(event.target.value);
+            setallAlowd(false);
+        }
+    };
+
+    const whenClose = (event) => {
+        alert(personName); // Вот так передадим наверх  personName.indexOf(elem.name) > -1 - проверка принадлежности
+    };
+
     return (
-        <TableContainer className={classes.container}>
-            <Table stickyHeader aria-label="sticky table" className={classes.table}>
-                <StickyContainer className="container">
-                    <Sticky>
-                        {({ style }) => (
-                            <HeadofTable style={style} columns={columns} />
-                        )}
-                    </Sticky>
-                    <TableBody>
-                        {rows.map((row) => (
-                            <Row row={row} />
-                        ))}
-                    </TableBody>
-                </StickyContainer>
-            </Table>
-        </TableContainer>
+        <Grid container direction="column" justify="flex-start" alignItems="center">
+            <Grid container direction={"row"} justify={"space-around"} alignItems={"center"} className={classes.contaner}>
+                <Grid item container justify={"space-around"} xs={4}>
+                    <Grid item container justify={'center'} xs={12}>
+                        <Typography variant="h5">
+                            Уровень нагрузки:
+          </Typography>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <FormControlLabel
+                            control={<Checkbox checked={stateDifficulty.checkedLittle} onChange={changesDifficulty} name="checkedLittle" />}
+                            label="Легкий"
+                        />
+                    </Grid>
+                    <Grid item xs={4}>
+                        <FormControlLabel
+                            control={<Checkbox checked={stateDifficulty.checkedMiddle} onChange={changesDifficulty} name="checkedMiddle" />}
+                            label="Средний"
+                        />
+                    </Grid>
+                    <Grid item xs={4}>
+                        <FormControlLabel
+                            control={<Checkbox checked={stateDifficulty.checkedBig} onChange={changesDifficulty} name="checkedBig" />}
+                            label="Большой"
+                        />
+                    </Grid>
+                </Grid>
+
+                <Grid item xs={4}>
+                    <FormControl className={classes.formControl}>
+                        <InputLabel htmlFor="grouped-select">Тренеровки</InputLabel>
+                        <Select
+                            labelId="demo-mutiple-checkbox-label"
+                            id="demo-mutiple-checkbox"
+                            multiple
+                            value={personName}
+                            onChange={handleChange}
+                            onClose={whenClose}
+                            input={<Input />}
+                            renderValue={(selected) => selected.join(", ")}
+                            MenuProps={MenuProps}
+                        >
+                            <MenuItem value="exit">
+                                <em>Все занятия</em>
+                            </MenuItem>
+                            < ListSubheader disableSticky> {gyms[0].type}</ListSubheader>
+                            {gyms[0].items.map((elem) => (
+                                <MenuItem key={elem} value={elem.name} >
+                                    <Checkbox checked={(personName.indexOf(elem.name) > -1)} />
+                                    <ListItemText primary={elem.name} />
+                                </MenuItem>
+                            ))}
+                            < ListSubheader disableSticky> {gyms[1].type}</ListSubheader>
+                            {gyms[1].items.map((elem) => (
+                                <MenuItem key={elem} value={elem.name}>
+                                    <Checkbox checked={personName.indexOf(elem.name) > -1} />
+                                    <ListItemText primary={elem.name} />
+                                </MenuItem>
+                            ))}
+
+                            < ListSubheader disableSticky> {gyms[2].type}</ListSubheader>
+                            {gyms[2].items.map((elem) => (
+                                <MenuItem key={elem} value={elem.name}>
+                                    <Checkbox checked={personName.indexOf(elem.name) > -1} />
+                                    <ListItemText primary={elem.name} />
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </Grid>
+            </Grid >
+
+            <TableContainer className={classes2.container}>
+                <Table stickyHeader aria-label="sticky table" className={classes2.table}>
+                    <StickyContainer className="container">
+                        <Sticky>
+                            {({ style }) => (
+                                <HeadofTable style={style} columns={columns} />
+                            )}
+                        </Sticky>
+                        <TableBody>
+                            {rows2.map((row) => (
+                                <Row row={row} allAlowd={allAlowd} stateDifficulty={stateDifficulty} personName={personName} />
+                            ))}
+                        </TableBody>
+                    </StickyContainer>
+                </Table>
+            </TableContainer>
+        </Grid>
     );
 }
