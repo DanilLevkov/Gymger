@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import { Divider, FormControl, FormGroup, InputLabel, ListItemText, ListSubheader, MenuItem, Select } from '@material-ui/core';
+import { Divider, FormControl, FormGroup, Input, InputLabel, ListItemText, ListSubheader, MenuItem, Select } from '@material-ui/core';
 
 const gyms = [
   {
@@ -40,56 +40,55 @@ const useStyles = makeStyles((theme) => ({
     padding: "20px",
   },
   formControl: {
-    minWidth: 220,
+    margin: theme.spacing(1),
+    minWidth: 320, // Ширина коробочки ввода
+    maxWidth: 1000,
   },
 }));
-function SetAll(bol) {
-  for (var prop of gyms) {
-    for (var item of prop.items) {
-      item.isChecked = bol;
+
+const ITEM_HEIGHT = 100; // высота выпадающего списка
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 300
     }
   }
-}
-/* function SetAllFalse() {
-  for (var prop of gyms) {
-    for (var item of prop.items) {
-      item.isChecked = false;
-    }
-  }
-} */
-function SetItem(type, name, bol) {
-  for (var i of gyms) {
-    if (i.type === type) {
-      for (var x of i.items) {
-        if (x.name === name) {
-          x.isChecked = bol;
-        }
-      }
-    }
-  }
-}
+};
+
 
 export default function Sidebar() {
   const classes = useStyles();
-  const [stateall, setState2] = React.useState({
-    allChecked: true,
-  });
+  const [stateall, setStateAll] = React.useState(true);
+
   const [state2, setState] = React.useState({
     checkedLittle: true,
     checkedMiddle: true,
     checkedBig: true,
   });
+  const setDifficulty = (event) => {
+    setState(event.target.value);
+  };
+
   const onAll = () => {
-    setState2({ ...stateall, allChecked: true });
-    SetAll(true);
+    setStateAll(false);
+    /* SetAll(true); */
+    //setPersonName([]);
+
   };
   const offAll = () => {
-    setState2({ ...stateall, allChecked: false });
+    setStateAll(true);
   };
 
+  const [personName, setPersonName] = React.useState([]);
 
   const handleChange = (event) => {
-    setState({ ...state2, [event.target.name]: event.target.checked });
+    setPersonName(event.target.value);
+  };
+
+  const whenClose = (event) => {
+    alert(personName); // Вот так передадим наверх  personName.indexOf(elem.name) > -1 - проверка принадлежности
   };
 
 
@@ -124,34 +123,46 @@ export default function Sidebar() {
       <Grid item xs={4}>
         <FormControl className={classes.formControl}>
           <InputLabel htmlFor="grouped-select">Тренеровки</InputLabel>
-          <Select defaultValue="" id="grouped-select" renderValue='' >
+          <Select
+            labelId="demo-mutiple-checkbox-label"
+            id="demo-mutiple-checkbox"
+            multiple
+            value={personName}
+            onChange={handleChange}
+            onClose={whenClose}
+            input={<Input />}
+            renderValue={(selected) => selected.join(", ")}
+            MenuProps={MenuProps}
+          >
             <MenuItem value="" onClick={onAll}>
               <em>Все</em>
             </MenuItem>
-
-
-            < ListSubheader > {gyms[0].type}</ListSubheader>
+            < ListSubheader disableSticky> {gyms[0].type}</ListSubheader>
             {gyms[0].items.map((elem) => (
-              <MenuItem key={elem} value={elem}>
-                {elem.name}
+              <MenuItem key={elem} value={elem.name} >
+              <Checkbox checked={(personName.indexOf(elem.name) > -1)}  onChange={offAll} />
+              <ListItemText primary={elem.name} />
               </MenuItem>
             ))}
-            < ListSubheader > {gyms[1].type}</ListSubheader>
+            < ListSubheader disableSticky> {gyms[1].type}</ListSubheader>
             {gyms[1].items.map((elem) => (
-              <MenuItem key={elem} value={elem}>
-                 {elem.name}
+              <MenuItem key={elem} value={elem.name}>
+              <Checkbox checked={personName.indexOf(elem.name) > -1} />
+              <ListItemText primary={elem.name} />
               </MenuItem>
             ))}
 
-            < ListSubheader > {gyms[2].type}</ListSubheader>
+            < ListSubheader disableSticky> {gyms[2].type}</ListSubheader>
             {gyms[2].items.map((elem) => (
-              <MenuItem key={elem} value=''>
-                 {elem.name}
+              <MenuItem key={elem} value={elem.name}>
+              <Checkbox checked={personName.indexOf(elem.name) > -1} />
+              <ListItemText primary={elem.name} />
               </MenuItem>
             ))}
           </Select>
         </FormControl>
       </Grid>
     </Grid >
+    
   );
 }
