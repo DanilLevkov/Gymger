@@ -11,10 +11,26 @@ import { Divider, FormControl, FormGroup, InputLabel, ListSubheader, MenuItem, S
 
 const gyms = [
   {
-    id: 1,
-    type: 'Power',
+    type: 'Растяжка',
     items: [
-      { name: "Йога", isChecked: true }
+      { name: "Йога", isChecked: true },
+      { name: "Пилатес", isChecked: true },
+      { name: "Бентч", isChecked: true },
+    ]
+  },
+  {
+    type: 'Силовые',
+    items: [
+      { name: "Hot Iron", isChecked: true },
+      { name: "Crossfet", isChecked: true },
+      { name: "Math Ball", isChecked: true },
+    ]
+  },
+  {
+    type: 'Бассейн',
+    items: [
+      { name: "Водные процедуры", isChecked: true },
+      { name: "Ныряние", isChecked: true },
     ]
   },
 ];
@@ -99,9 +115,6 @@ export default function Sidebar() {
           </Select>
         </FormControl>
       </Grid>
-      {/* <Grid item xs={4}>
-       
-      </Grid> */}
     </Grid>
   );
 }
