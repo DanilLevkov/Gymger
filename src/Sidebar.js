@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import { Divider, FormControl, FormGroup, InputLabel, ListSubheader, MenuItem, Select } from '@material-ui/core';
+import { Divider, FormControl, FormGroup, InputLabel, ListItemText, ListSubheader, MenuItem, Select } from '@material-ui/core';
 
 const gyms = [
   {
@@ -43,10 +43,31 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 220,
   },
 }));
-function SetCheckedGym() {
-
+function SetAll(bol) {
+  for (var prop of gyms) {
+    for (var item of prop.items) {
+      item.isChecked = bol;
+    }
+  }
 }
-
+/* function SetAllFalse() {
+  for (var prop of gyms) {
+    for (var item of prop.items) {
+      item.isChecked = false;
+    }
+  }
+} */
+function SetItem(type, name, bol) {
+  for (var i of gyms) {
+    if (i.type === type) {
+      for (var x of i.items) {
+        if (x.name === name) {
+          x.isChecked = bol;
+        }
+      }
+    }
+  }
+}
 
 export default function Sidebar() {
   const classes = useStyles();
@@ -60,6 +81,7 @@ export default function Sidebar() {
   });
   const onAll = () => {
     setState2({ ...stateall, allChecked: true });
+    SetAll(true);
   };
   const offAll = () => {
     setState2({ ...stateall, allChecked: false });
@@ -69,6 +91,7 @@ export default function Sidebar() {
   const handleChange = (event) => {
     setState({ ...state2, [event.target.name]: event.target.checked });
   };
+
 
   return (
     <Grid container direction={"row"} justify={"space-around"} alignItems={"center"} className={classes.contaner}>
@@ -101,20 +124,34 @@ export default function Sidebar() {
       <Grid item xs={4}>
         <FormControl className={classes.formControl}>
           <InputLabel htmlFor="grouped-select">Тренеровки</InputLabel>
-          <Select defaultValue="" id="grouped-select">
+          <Select defaultValue="" id="grouped-select" renderValue='' >
             <MenuItem value="" onClick={onAll}>
               <em>Все</em>
             </MenuItem>
-            <ListSubheader>Силовые</ListSubheader>
-            <MenuItem value={1}>Option 1</MenuItem>
-            <MenuItem value={2}>Option 2</MenuItem>
-            <ListSubheader>Растяжка</ListSubheader>
-            <ListSubheader>Бассейн</ListSubheader>
-            <MenuItem value={3}>Option 3</MenuItem>
-            <MenuItem value={4}>Option 4</MenuItem>
+
+
+            < ListSubheader > {gyms[0].type}</ListSubheader>
+            {gyms[0].items.map((elem) => (
+              <MenuItem key={elem} value={elem}>
+                {elem.name}
+              </MenuItem>
+            ))}
+            < ListSubheader > {gyms[1].type}</ListSubheader>
+            {gyms[1].items.map((elem) => (
+              <MenuItem key={elem} value={elem}>
+                 {elem.name}
+              </MenuItem>
+            ))}
+
+            < ListSubheader > {gyms[2].type}</ListSubheader>
+            {gyms[2].items.map((elem) => (
+              <MenuItem key={elem} value=''>
+                 {elem.name}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
       </Grid>
-    </Grid>
+    </Grid >
   );
 }
