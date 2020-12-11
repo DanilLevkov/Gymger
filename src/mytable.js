@@ -26,7 +26,7 @@ const gyms = getGyms();
 function CellFill(props) {
     const { event } = props;
     if (props.stateDifficulty[event.difficulty] === true) {
-        if ((props.allAlowd) || (props.personName.indexOf(event.label) > -1)) {
+        if ((props.personName.length === 0) || (props.personName.indexOf(event.label) > -1)) {
             return (
                 <Grid item alignContent="center">
                     <GymCard lesson={event} />
@@ -51,7 +51,7 @@ function CellContent(props) {
         <React.Fragment>
             <Grid container direction="column" justify="flex-start" alignItems="center" spacing={1} padding={3}>
                 {cell.map((event) => (
-                    <CellFill event={event} allAlowd={props.allAlowd} stateDifficulty={props.stateDifficulty} personName={props.personName} />
+                    <CellFill event={event} stateDifficulty={props.stateDifficulty} personName={props.personName} />
                 ))}
             </Grid>
         </React.Fragment>
@@ -82,7 +82,7 @@ function Row(props) {
                     const value = row[column.id];
                     return (
                         <TableCell key={column.id} className={classes.root} >
-                            {typeof value === 'object' ? <CellContent cell={value} allAlowd={props.allAlowd} stateDifficulty={props.stateDifficulty} personName={props.personName} /> : ''}
+                            {typeof value === 'object' ? <CellContent cell={value} stateDifficulty={props.stateDifficulty} personName={props.personName} /> : ''}
                         </TableCell>
                     );
                 })}
@@ -132,7 +132,6 @@ export default function MyTable() {
     const classes2 = TableStyles();
     const classes = useStyles();
     const [personName, setPersonName] = React.useState([]);
-    const [allAlowd, setallAlowd] = React.useState(true);
     const [stateDifficulty, setState] = React.useState({
         checkedLittle: true,
         checkedMiddle: true,
@@ -146,16 +145,14 @@ export default function MyTable() {
     const handleChange = (event) => {
         if (event.target.value.indexOf("exit") > -1) {
             setPersonName([]);
-            setallAlowd(true);
         }
         else {
             setPersonName(event.target.value);
-            setallAlowd(false);
         }
     };
 
     const whenClose = (event) => {
-        alert(personName); // Вот так передадим наверх  personName.indexOf(elem.name) > -1 - проверка принадлежности
+        alert(personName.length); // Вот так передадим наверх  personName.indexOf(elem.name) > -1 - проверка принадлежности
     };
 
     return (
@@ -241,7 +238,7 @@ export default function MyTable() {
                         </Sticky>
                         <TableBody>
                             {rows2.map((row) => (
-                                <Row row={row} allAlowd={allAlowd} stateDifficulty={stateDifficulty} personName={personName} />
+                                <Row row={row}  stateDifficulty={stateDifficulty} personName={personName} />
                             ))}
                         </TableBody>
                     </StickyContainer>
