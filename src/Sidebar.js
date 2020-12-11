@@ -60,31 +60,27 @@ const MenuProps = {
 
 export default function Sidebar() {
   const classes = useStyles();
-  const [stateall, setStateAll] = React.useState(true);
 
   const [state2, setState] = React.useState({
     checkedLittle: true,
     checkedMiddle: true,
     checkedBig: true,
   });
+
   const setDifficulty = (event) => {
     setState(event.target.value);
   };
 
-  const onAll = () => {
-    setStateAll(false);
-    /* SetAll(true); */
-    //setPersonName([]);
-
-  };
-  const offAll = () => {
-    setStateAll(true);
-  };
 
   const [personName, setPersonName] = React.useState([]);
 
   const handleChange = (event) => {
-    setPersonName(event.target.value);
+    if (event.target.value.indexOf("exit") > -1){
+      setPersonName([]);
+    }
+    else{
+      setPersonName(event.target.value);
+    }
   };
 
   const whenClose = (event) => {
@@ -134,13 +130,13 @@ export default function Sidebar() {
             renderValue={(selected) => selected.join(", ")}
             MenuProps={MenuProps}
           >
-            <MenuItem value="" onClick={onAll}>
-              <em>Все</em>
+            <MenuItem value="exit">
+              <em>Все занятия</em>
             </MenuItem>
             < ListSubheader disableSticky> {gyms[0].type}</ListSubheader>
             {gyms[0].items.map((elem) => (
               <MenuItem key={elem} value={elem.name} >
-              <Checkbox checked={(personName.indexOf(elem.name) > -1)}  onChange={offAll} />
+              <Checkbox checked={(personName.indexOf(elem.name) > -1)} />
               <ListItemText primary={elem.name} />
               </MenuItem>
             ))}
