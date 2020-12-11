@@ -7,17 +7,25 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import { Divider, FormControl, FormGroup, InputLabel, ListSubheader, MenuItem, Select } from '@material-ui/core';
+
+const gyms = [
+  {
+    type: 'Strong',
+  },
+];
+
+
+
+
 
 
 const useStyles = makeStyles((theme) => ({
-  sidebarAboutBox: {
-    padding: theme.spacing(2),
-    backgroundColor: theme.palette.grey[200],
+  contaner: {
+    padding: "20px",
   },
-  buttonsSide: {
-    '& > *': {
-      margin: theme.spacing(1),
-    },
+  formControl: {
+    minWidth: 220,
   },
 }));
 
@@ -25,36 +33,60 @@ const useStyles = makeStyles((theme) => ({
 export default function Sidebar() {
   const classes = useStyles();
 
+  const [state, setState] = React.useState({
+    checkedPower: true,
+    checkedStratch: true,
+    checkedPool: true,
+  });
+
+
+  const handleChange = (event) => {
+    setState({ ...state, [event.target.name]: event.target.checked });
+  };
+
   return (
-    <Grid item xs={12} md={12}>
-      <Paper elevation={4} className={classes.sidebarAboutBox}>
-        <form className={classes.form} noValidate>
-        <Grid container spacing={0}>
-        <Grid item xs={12} sm={12}>
-        <FormControlLabel
-        control={<Checkbox value="hak" size="small" color="secondary" />}
-        label="Очное"
-        />
+    <Grid container direction={"row"} justify={"space-around"} alignItems={"center"} className={classes.contaner}>
+      <Grid item container xs={4}>
+        <Grid item xs={4}>
+          <FormControlLabel
+            control={<Checkbox checked={state.checkedPower} onChange={handleChange} name="checkedPower" />}
+            label="Силовые"
+          />
         </Grid>
+        <Grid item xs={4}>
+          <FormControlLabel
+            control={<Checkbox checked={state.checkedStratch} onChange={handleChange} name="checkedStratch" />}
+            label="Растяжка"
+          />
+        </Grid>
+        <Grid item xs={4}>
+          <FormControlLabel
+            control={<Checkbox checked={state.checkedPool} onChange={handleChange} name="checkedPool" />}
+            label="Бассейн"
+          />
+        </Grid>
+      </Grid>
 
-        <Grid item xs={12} sm={12}>
-        <FormControlLabel
-        control={<Checkbox value="hak" size="small" color="secondary" />}
-        label="Дистанционное"
-        />
-        </Grid>
-
-        </Grid>
-        </form>
-     
-     </Paper>  
+      <Grid item xs={4}>
+      <FormControl className={classes.formControl}>
+        <InputLabel htmlFor="grouped-select">Тренеровки</InputLabel>
+        <Select defaultValue="" id="grouped-select">
+          <MenuItem value="">
+            <em>Все</em>
+          </MenuItem>
+          <ListSubheader>Силовые</ListSubheader>
+          <MenuItem value={1}>Option 1</MenuItem>
+          <MenuItem value={2}>Option 2</MenuItem>
+          <ListSubheader>Растяжка</ListSubheader>
+          <ListSubheader>Бассейн</ListSubheader>
+          <MenuItem value={3}>Option 3</MenuItem>
+          <MenuItem value={4}>Option 4</MenuItem>
+        </Select>
+      </FormControl>
+      </Grid>
+      {/* <Grid item xs={4}>
+       
+      </Grid> */}
     </Grid>
   );
 }
-
-Sidebar.propTypes = {
-  archives: PropTypes.array,
-  description: PropTypes.string,
-  social: PropTypes.array,
-  title: PropTypes.string,
-};

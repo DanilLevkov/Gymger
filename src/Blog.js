@@ -38,13 +38,9 @@ export default function Blog() {
 
       <Container className={classes.mainContaner}>
         <Paper elevation="3" className={classes.paper}>
-          <Grid container spacing={2} direction="column" justify="flex-start" alignItems="center">
-            <Grid item >
+          <Grid container direction="column" justify="flex-start" alignItems="center">
               <Sidebar />
-            </Grid>
-            <Grid item>
               <MyTable rows={rows2} />
-            </Grid>
           </Grid>
         </Paper>
       </Container>
