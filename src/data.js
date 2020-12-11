@@ -51,7 +51,7 @@ export function getRows() {
 
 const rows = [
     {
-      time: '18:30',
+      time: '11:30',
       tu: [{
         title: "Йога checkedBig",
         type: "Йога",
@@ -148,7 +148,7 @@ const rows = [
       ]
     },
     {
-      time: '12:30',
+      time: '18:30',
       tu: [],
       th: [],
       st: [],
@@ -208,7 +208,7 @@ const rows = [
       ]
     },
     {
-      time: '14:30',
+      time: '15:00',
       st: [],
       sd: [],
       md: [
@@ -259,7 +259,7 @@ const rows = [
       ]
     },
     {
-      time: '12:30',
+      time: '13:45',
       tu: [],
       th: [],
       st: [],
@@ -319,7 +319,7 @@ const rows = [
       ]
     },
     {
-      time: '12:30',
+      time: '20:30',
       tu: [],
       th: [],
       st: [],

@@ -18,15 +18,14 @@ const GridStyles = makeStyles({
   paper: {
     width: "1300px",
   },
+  bottomPaper: {
+    padding: 10,
+    margin: 40,
+  },
 });
 
 export default function Blog() {
   const classes = GridStyles();
-  const [stateDifficulty, setDifficulty] = React.useState({
-    checkedLittle: true,
-    checkedMiddle: true,
-    checkedBig: true,
-  });
   return (
     <React.Fragment>
       <CssBaseline />
@@ -35,12 +34,11 @@ export default function Blog() {
       </Container>
       <Container className={classes.mainContaner}>
         <Paper elevation="3" className={classes.paper}>
-             {/*  <Sidebar /> */}
               <MyTable />
         </Paper>
       </Container>
 
-      <Paper width="100%">
+      <Paper width="100%" className={classes.bottomPaper}>
         Some add info
     </Paper>
     </React.Fragment>

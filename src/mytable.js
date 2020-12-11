@@ -11,25 +11,39 @@ import { StickyContainer, Sticky } from 'react-sticky';
 import { getColumns, getGyms, getRows } from './data'
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import { Divider, FormControl, FormGroup, Input, InputLabel, ListItemText, ListSubheader, MenuItem, Select } from '@material-ui/core';
+import { Divider, FormControl, Input, InputLabel, ListItemText, ListSubheader, MenuItem, Select } from '@material-ui/core';
 
 
 //Сортировка
-//const rows2 = rows.sort((a, b) => a.time > b.time);
-const rows2 = getRows();
+const rows = getRows();
+const rows2 = rows.sort(function(a,b){ 
+    if (a.time > b.time) {
+        return 1;
+      }
+      if (a.time < b.time) {
+        return -1;
+      }
+      // a должно быть равным b
+      return 0;
+  });
 const columns = getColumns();
 const gyms = getGyms();
 
 function CellFill(props) {
     const { event } = props;
     if (props.stateDifficulty[event.difficulty] === true) {
-        if ((props.personName.length === 0) || (props.personName.indexOf(event.label) > -1)) {
+        if ((props.personName.length === 0) ||  (props.personName.indexOf(event.type) > -1)) {
             return (
                 <Grid item alignContent="center">
                     <GymCard lesson={event} />
+                </Grid>
+            )
+        } else {
+            return (
+                <Grid item alignContent="center">
+                    <div dar={event} style={{ width: "161px" }}> </div>
                 </Grid>
             )
         }
@@ -151,9 +165,6 @@ export default function MyTable() {
         }
     };
 
-    const whenClose = (event) => {
-        alert(personName.length); // Вот так передадим наверх  personName.indexOf(elem.name) > -1 - проверка принадлежности
-    };
 
     return (
         <Grid container direction="column" justify="flex-start" alignItems="center">
@@ -162,7 +173,7 @@ export default function MyTable() {
                     <Grid item container justify={'center'} xs={12}>
                         <Typography variant="h5">
                             Уровень нагрузки:
-          </Typography>
+                        </Typography>
                     </Grid>
                     <Grid item xs={4}>
                         <FormControlLabel
@@ -179,7 +190,7 @@ export default function MyTable() {
                     <Grid item xs={4}>
                         <FormControlLabel
                             control={<Checkbox checked={stateDifficulty.checkedBig} onChange={changesDifficulty} name="checkedBig" />}
-                            label="Большой"
+                            label="Тяжёлый"
                         />
                     </Grid>
                 </Grid>
@@ -193,7 +204,6 @@ export default function MyTable() {
                             multiple
                             value={personName}
                             onChange={handleChange}
-                            onClose={whenClose}
                             input={<Input />}
                             renderValue={(selected) => selected.join(", ")}
                             MenuProps={MenuProps}
