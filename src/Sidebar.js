@@ -58,21 +58,40 @@ const MenuProps = {
 };
 
 
+
 export default function Sidebar() {
   const classes = useStyles();
-
-  const [state2, setState] = React.useState({
+  var difficulty=["checkedLittle","checkedMiddle","checkedBig"];
+  const [personName, setPersonName] = React.useState([]);
+  const [stateDifficulty, setState] = React.useState({
     checkedLittle: true,
     checkedMiddle: true,
     checkedBig: true,
   });
+/* 
+  function parseDifficulty(prop) {
+    var difficulty=[];
+    if (prop.checkedLittle){
+      difficulty.push("checkedLittle");
+    }
+    if (prop.checkedMiddle){
+      difficulty.push("checkedMiddle");
+    }
+    if (prop.checkedBig){
+      difficulty.push("checkedBig");
+    }
+    alert(difficulty);
+  } */
 
-  const setDifficulty = (event) => {
-    setState(event.target.value);
+  const changesDifficulty = (event) => {
+    setState({ ...stateDifficulty, [event.target.name]: event.target.checked });
+    if (stateDifficulty["checkedLittle"]){
+      alert("mama");
+    }
   };
 
 
-  const [personName, setPersonName] = React.useState([]);
+  
 
   const handleChange = (event) => {
     if (event.target.value.indexOf("exit") > -1){
@@ -98,19 +117,19 @@ export default function Sidebar() {
         </Grid>
         <Grid item xs={4}>
           <FormControlLabel
-            control={<Checkbox checked={state2.checkedLittle} onChange={handleChange} name="checkedLittle" />}
+            control={<Checkbox checked={stateDifficulty.checkedLittle} onChange={changesDifficulty} name="checkedLittle" />}
             label="Легкий"
           />
         </Grid>
         <Grid item xs={4}>
           <FormControlLabel
-            control={<Checkbox checked={state2.checkedMiddle} onChange={handleChange} name="checkedMiddle" />}
+            control={<Checkbox checked={stateDifficulty.checkedMiddle} onChange={changesDifficulty} name="checkedMiddle" />}
             label="Средний"
           />
         </Grid>
         <Grid item xs={4}>
           <FormControlLabel
-            control={<Checkbox checked={state2.checkedBig} onChange={handleChange} name="checkedBig" />}
+            control={<Checkbox checked={stateDifficulty.checkedBig} onChange={changesDifficulty} name="checkedBig" />}
             label="Большой"
           />
         </Grid>
