@@ -1,4 +1,9 @@
 
+// Value - это +-1 на сколько изменилось число
+export function cangeVacant(id, value) {
+  alert(value);
+}
+
 
 export function getColumns() {
   return columns;
@@ -53,6 +58,7 @@ const rows = [
     {
       time: '11:30',
       tu: [{
+        id: 1,
         title: "Йога по тяжелее",
         type: "Йога",
         difficulty: "checkedMiddle",
@@ -63,6 +69,7 @@ const rows = [
         short_info: "Some info2",
       },],
       th: [{
+        id: 2,
         title: "Йога lite", 
         type: "Йога",
         difficulty: "checkedLittle",
@@ -73,15 +80,18 @@ const rows = [
         short_info: "Some info2",
       },],
       st: [{
-        title: "f",
-        difficulty: "checkedbig",
+        id: 356,
+        title: "Записи нет",
         type: "Crossfit",
-        hall: "Зал 2",
+        vacant: 0,
+        difficulty: "checkedLittle",
+        hall: "Зал 5",
         time: '18:30',
         image_url: "https://source.unsplash.com/random/?science",
         short_info: "Some info2",
       },],
       sd: [{
+        id: 4,
         title: "Crossfit lite",
         type: "Crossfit",
         difficulty: "checkedLittle",
@@ -92,6 +102,7 @@ const rows = [
       },],
       md: [
         {
+          id: 5,
           title: "Gym morning",
           type: "Йога",
           vacant: 50,
@@ -209,7 +220,17 @@ const rows = [
     },
     {
       time: '15:00',
-      st: [],
+      st: [
+        {
+          title: "Lazy",
+          type: "Hot Iron",
+          hall: "Зал 1",
+          difficulty: "checkedLittle",
+          image_url: "https://source.unsplash.com/random/?computer",
+          short_info: "Some info lazy",
+          time: '12:30',
+        },
+      ],
       sd: [],
       md: [
         {

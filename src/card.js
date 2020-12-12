@@ -6,6 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Badge, Button, CardActionArea, Grid, Paper } from '@material-ui/core';
+import { cangeVacant } from './data';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -34,11 +35,43 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
+
+
 export default function GymCard(props) {
     const { lesson } = props;
     var color2;
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
+    const [clicked, setClicked] = React.useState(false);
+    const [vacant, setVacant] = React.useState(lesson.vacant);
+    function onButtom() {
+        setVacant(vacant - 1);
+        setClicked(true);
+        cangeVacant(lesson.id, -1); // Изменение количества вакантных мест
+    }
+    function offButtom() {
+        setVacant(vacant + 1);
+        setClicked(false);
+        cangeVacant(lesson.id, 1);
+    }
+    function changeButtom() {
+        if (clicked) {
+            return (
+                <Button onClick={offButtom} size="medium" variant="contained" color="primary" >не смогу</Button>
+            )
+        } else {
+            if (vacant > 0) {
+                return (
+                    //(prev) => setVacant(prev + 1)
+                    <Button onClick={onButtom} size="medium" variant="contained" color="secondary" >пойду</Button>
+                )
+            } else {
+                return (
+                    <Button disabled onClick={onButtom} size="medium" variant="contained" color="secondary" >пойду</Button>
+                )
+            }
+        }
+    }
     if (lesson.vacant > 10) {
         color2 = "primary";
     } else if (lesson.vacant > 3) {
@@ -62,7 +95,7 @@ export default function GymCard(props) {
                     <Grid item xs={1}>
                         <Badge
                             showZero
-                            badgeContent={lesson.vacant}
+                            badgeContent={vacant}
                             color={color2}
                             className={classes.badge}>
                         </Badge>
@@ -96,7 +129,7 @@ export default function GymCard(props) {
                         {lesson.short_info}
                     </Typography>
                     <div style={{ margin: 10 }}>
-                        <Button size="medium" variant="contained" color="secondary" >пойду</Button>
+                        {changeButtom()}
                     </div>
                 </Collapse>
             </Paper>
