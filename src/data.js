@@ -1,7 +1,6 @@
 
 // Value - это +-1 на сколько изменилось число
 export function cangeVacant(id, value) {
-  alert(value);
 }
 
 
@@ -73,7 +72,7 @@ const rows = [
         title: "Йога lite", 
         type: "Йога",
         difficulty: "checkedLittle",
-        vacant: 2,
+        vacant: 4,
         hall: "Зал 1",
         time: '18:30',
         image_url: "https://source.unsplash.com/random/?science",
