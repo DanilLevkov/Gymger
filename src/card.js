@@ -57,6 +57,7 @@ export default function GymCard(props) {
     const [expanded, setExpanded] = React.useState(false);
     const [dialodOpen, setDialod] = React.useState(false);
     const [clicked, setClicked] = React.useState(false);
+    const isVacant = (typeof lesson['vacant'] !== "undefined") ? true : false;
     const [vacant, setVacant] = React.useState(lesson.vacant);
     function onButtom(event) {
         event.stopPropagation();
@@ -102,7 +103,7 @@ export default function GymCard(props) {
 
     return (
         <div>
-            <CardActionArea onClick={() => setDialod(true)}>
+            <CardActionArea style={{ zIndex: 1}} onClick={() => setDialod(true)}>
                 <Paper className={classes.root} >
                     <Grid container className={classes.GridContaner}>
                         <Grid item xs={11}>
@@ -159,7 +160,7 @@ export default function GymCard(props) {
                 onClose={() => setDialod(false)}
                 maxWidth={800}
             >
-                <MuiDialogContent style={{ paddingTop: 0, padding: 0, minWidth: 700 }}>
+                <MuiDialogContent style={{ paddingTop: 0, padding: 0, minWidth: 600, maxWidth: 800 }}>
                     <Grid container className={classes.DialogGrid} spacing={0}>
                         <Grid item container xs={12} justify='space-between' >
                             <Grid item xs={10}>
@@ -174,7 +175,7 @@ export default function GymCard(props) {
                             </Grid>
                         </Grid>
                         <Grid item container xs={12} alignItems='center' justify='space-between'  >
-                            <Grid item xs={6} direction='column'>
+                            <Grid item xs={4} direction='column'>
                                 <Typography variant="h5" >
                                     {lesson.type}
                                 </Typography>
@@ -189,13 +190,13 @@ export default function GymCard(props) {
                                 </Typography>
                             </Grid>
 
-                            <Grid item container xs={3} direction='row' alignItems='center' justify='center' >
+                            <Grid item container xs={4} direction='row' alignItems='center' justify='center' >
                                 <PlaceIcon medium />
                                 <Typography variant="h5" >
                                     {lesson.hall}
                                 </Typography>
                             </Grid>
-                            <Grid item container xs={3} direction='row' alignItems='center' justify='flex-end' >
+                            <Grid item container xs={4} direction='row' alignItems='center' justify='flex-end' >
                                 <ScheduleIcon medium />
                                 <Typography variant="h5" >
                                     {lesson.time}
@@ -204,9 +205,9 @@ export default function GymCard(props) {
                         </Grid>
                     </Grid>
                     <Divider />
-                    <Grid container className={classes.DialogGrid}>
+                    
                         <CustomizedDialog long_info={lesson.long_info} coach_id={lesson.coach_id}></CustomizedDialog>
-                    </Grid>
+                    
                 </MuiDialogContent>
             </Dialog>
         </div>

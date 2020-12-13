@@ -243,7 +243,7 @@ export default function MyTable() {
                     <StickyContainer className="container">
                         <Sticky>
                             {({ style }) => (
-                                <HeadofTable style={style} columns={columns} />
+                                <HeadofTable style={{...style, zIndex: 100}} columns={columns} />
                             )}
                         </Sticky>
                         <TableBody>
