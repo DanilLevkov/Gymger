@@ -159,7 +159,7 @@ export default function GymCard(props) {
                 onClose={() => setDialod(false)}
                 maxWidth={800}
             >
-                <MuiDialogContent style={{ paddingTop: 0, padding: 0, minWidth: 600 }}>
+                <MuiDialogContent style={{ paddingTop: 0, padding: 0, minWidth: 700 }}>
                     <Grid container className={classes.DialogGrid} spacing={0}>
                         <Grid item container xs={12} justify='space-between' >
                             <Grid item xs={10}>
@@ -204,7 +204,9 @@ export default function GymCard(props) {
                         </Grid>
                     </Grid>
                     <Divider />
-                    <CustomizedDialog lesson={lesson}></CustomizedDialog>
+                    <Grid container className={classes.DialogGrid}>
+                        <CustomizedDialog long_info={lesson.long_info} coach_id={lesson.coach_id}></CustomizedDialog>
+                    </Grid>
                 </MuiDialogContent>
             </Dialog>
         </div>
