@@ -5,7 +5,7 @@ import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Badge, Box, Button, Card, CardActionArea, CardContent, CardMedia, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Paper } from '@material-ui/core';
+import { Badge, Button, CardActionArea, Dialog, Divider, Grid, Paper } from '@material-ui/core';
 import { cangeVacant } from './data';
 import CustomizedDialog from './CustomizedDialog';
 import MuiDialogContent from '@material-ui/core/DialogContent';
@@ -30,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
         transform: 'rotate(180deg)',
     },
     badge: {
-        /*  position: "relative", */
         top: -10,
         right: 5,
         padding: '0 4px',
@@ -72,6 +71,9 @@ export default function GymCard(props) {
         cangeVacant(lesson.id, 1);
     }
     function changeButtom() {
+        if(!isVacant){
+            return null;
+        }
         if (clicked) {
             return (
                 <Button onClick={offButtom} size="medium" variant="contained" color="primary" >не смогу</Button>
@@ -79,7 +81,6 @@ export default function GymCard(props) {
         } else {
             if (vacant > 0) {
                 return (
-                    //(prev) => setVacant(prev + 1)
                     <Button onClick={onButtom} size="medium" variant="contained" color="secondary" >пойду</Button>
                 )
             } else {
@@ -205,9 +206,7 @@ export default function GymCard(props) {
                         </Grid>
                     </Grid>
                     <Divider />
-                    
                         <CustomizedDialog long_info={lesson.long_info} coach_id={lesson.coach_id}></CustomizedDialog>
-                    
                 </MuiDialogContent>
             </Dialog>
         </div>
