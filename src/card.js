@@ -179,13 +179,13 @@ export default function GymCard(props) {
                                     {lesson.type}
                                 </Typography>
                                 <Typography variant="subtitle1" >
-                                    Нагрузка: {lesson.difficulty}
-                                </Typography>
-                                <Typography variant="subtitle1" >
-                                    Продолжительность: {lesson.duration} мин
+                                    Нагрузка: {(lesson.difficulty === "checkedLittle") ? "низкая" : (lesson.difficulty === "checkedMiddle") ? "средняя" : "высокая"}
                                 </Typography>
                                 <Typography variant="subtitle1" >
                                     Свободных мест: {lesson.vacant}
+                                </Typography>
+                                <Typography variant="subtitle1" >
+                                    Продолжительность: {lesson.duration} мин
                                 </Typography>
                             </Grid>
 
@@ -204,7 +204,7 @@ export default function GymCard(props) {
                         </Grid>
                     </Grid>
                     <Divider />
-                    <CustomizedDialog></CustomizedDialog>
+                    <CustomizedDialog lesson={lesson}></CustomizedDialog>
                 </MuiDialogContent>
             </Dialog>
         </div>

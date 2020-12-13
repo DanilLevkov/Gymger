@@ -6,9 +6,7 @@ import { makeStyles } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors';
 
 export const TheStyles = makeStyles({
-    closeButton: {
-        color: grey,
-    },
+    
 });
 
 export default function CustomizedDialog(props) {
@@ -17,10 +15,8 @@ export default function CustomizedDialog(props) {
     const [open, setOpen] = React.useState(false);
 
     return (
-        <div>
         <Grid container>
-            
+            fnh ghngfh fgh 
         </Grid>
-        </div>
     );
 }
