@@ -16,18 +16,20 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { FormControl, Input, InputLabel, ListItemText, ListSubheader, MenuItem, Select } from '@material-ui/core';
 
 
-//Сортировка
 const rows = getRows();
+const times = Object.keys(rows);
+//Сортировка
+/* 
 const rows2 = rows.sort(function(a,b){ 
     if (a.time > b.time) {
         return 1;
-      }
-      if (a.time < b.time) {
+    }
+    if (a.time < b.time) {
         return -1;
       }
       // a должно быть равным b
       return 0;
-  });
+  }); */
 const columns = getColumns();
 const gyms = getGyms();
 
@@ -84,12 +86,12 @@ const CellStyles = makeStyles({
 
 function Row(props) {
     const classes = CellStyles();
-    const { row } = props;
+    const { row, time } = props;
     return (
         <React.Fragment>
             <TableRow>
                 <TableCell component="th" scope="row" width="30px">
-                    {row.time}
+                    {time}
                 </TableCell>
 
                 {columns.map((column) => {
@@ -247,8 +249,8 @@ export default function MyTable() {
                             )}
                         </Sticky>
                         <TableBody>
-                            {rows2.map((row) => (
-                                <Row row={row}  stateDifficulty={stateDifficulty} personName={personName} />
+                            {times.map((time) => (
+                                <Row row={rows[time]} time={time}  stateDifficulty={stateDifficulty} personName={personName} />
                             ))}
                         </TableBody>
                     </StickyContainer>
