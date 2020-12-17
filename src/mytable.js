@@ -8,7 +8,9 @@ import TableRow from '@material-ui/core/TableRow';
 import GymCard from './card';
 import { HeadofTable } from "./tableHead";
 import { StickyContainer, Sticky } from 'react-sticky';
-import { getColumns, getGyms, getRows } from './data'
+
+import { getColumns, getGyms, getRows, getTimes } from './data'
+
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -16,21 +18,15 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { FormControl, Input, InputLabel, ListItemText, ListSubheader, MenuItem, Select } from '@material-ui/core';
 
 
-const rows = getRows();
-const times = Object.keys(rows);
-//Сортировка
-/* 
-const rows2 = rows.sort(function(a,b){ 
-    if (a.time > b.time) {
-        return 1;
-    }
-    if (a.time < b.time) {
-        return -1;
-      }
-      // a должно быть равным b
-      return 0;
-  }); */
+const elements = getRows();
+const times = getTimes();
 const columns = getColumns();
+const rows =[];
+// Parsing
+for (const t of times) {
+    rows.push({})
+}
+
 const gyms = getGyms();
 
 function CellFill(props) {
@@ -149,9 +145,9 @@ export default function MyTable() {
     const classes = useStyles();
     const [personName, setPersonName] = React.useState([]);
     const [stateDifficulty, setState] = React.useState({
-        checkedLittle: true,
-        checkedMiddle: true,
-        checkedBig: true,
+        little: true,
+        middle: true,
+        big: true,
     });
 
     const changesDifficulty = (event) => {
@@ -179,19 +175,19 @@ export default function MyTable() {
                     </Grid>
                     <Grid item xs={4}>
                         <FormControlLabel
-                            control={<Checkbox checked={stateDifficulty.checkedLittle} onChange={changesDifficulty} name="checkedLittle" />}
+                            control={<Checkbox checked={stateDifficulty.little} onChange={changesDifficulty} name="little" />}
                             label="Легкий"
                         />
                     </Grid>
                     <Grid item xs={4}>
                         <FormControlLabel
-                            control={<Checkbox checked={stateDifficulty.checkedMiddle} onChange={changesDifficulty} name="checkedMiddle" />}
+                            control={<Checkbox checked={stateDifficulty.middle} onChange={changesDifficulty} name="middle" />}
                             label="Средний"
                         />
                     </Grid>
                     <Grid item xs={4}>
                         <FormControlLabel
-                            control={<Checkbox checked={stateDifficulty.checkedBig} onChange={changesDifficulty} name="checkedBig" />}
+                            control={<Checkbox checked={stateDifficulty.big} onChange={changesDifficulty} name="big" />}
                             label="Тяжёлый"
                         />
                     </Grid>

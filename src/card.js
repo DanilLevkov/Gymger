@@ -181,7 +181,7 @@ export default function GymCard(props) {
                                     {lesson.type}
                                 </Typography>
                                 <Typography variant="subtitle1" >
-                                    Нагрузка: {(lesson.difficulty === "checkedLittle") ? "низкая" : (lesson.difficulty === "checkedMiddle") ? "средняя" : "высокая"}
+                                    Нагрузка: {(lesson.difficulty === "little") ? "низкая" : (lesson.difficulty === "middle") ? "средняя" : "высокая"}
                                 </Typography>
                                 <Typography variant="subtitle1" >
                                     Свободных мест: {lesson.vacant}
