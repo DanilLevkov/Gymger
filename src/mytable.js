@@ -21,18 +21,34 @@ import { FormControl, Input, InputLabel, ListItemText, ListSubheader, MenuItem, 
 const elements = getRows();
 const times = getTimes();
 const columns = getColumns();
-const rows =[];
+const days = {
+md: [{}],
+tu: [{}],
+wd: [{}],
+th: [{}],
+fr: [{}],
+st: [{}],
+sd: [{}],
+}
+var rows ={};
 // Parsing
 for (const t of times) {
-    rows.push({})
+    rows[t]=days;
+} 
+
+for (const elem of elements) {
+    rows[elem.timeGroup][elem.week_day].push(elem);
 }
+alert(rows['14:00']['tu']);
+
+
 
 const gyms = getGyms();
 
 function CellFill(props) {
     const { event } = props;
     if (props.stateDifficulty[event.difficulty] === true) {
-        if ((props.personName.length === 0) ||  (props.personName.indexOf(event.type) > -1)) {
+        if ((props.personName.length === 0) ||  (props.personName.indexOf(event.title) > -1)) {
             return (
                 <Grid item alignContent="center">
                     <GymCard lesson={event} />
