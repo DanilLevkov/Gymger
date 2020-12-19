@@ -103,18 +103,6 @@ const gyms = [
   },
 ];
 
-export function getTimes() {
-  return times;
-}
-
-const times = [
-  '11:00',
-  '12:00',
-  '14:00',
-  '15:00',
-  '18:00',
-];
-
 
 export function getRows() {
   return rows;

@@ -9,7 +9,7 @@ import GymCard from './card';
 import { HeadofTable } from "./tableHead";
 import { StickyContainer, Sticky } from 'react-sticky';
 
-import { getColumns, getGyms, getRows, getTimes } from './data'
+import { getColumns, getGyms, getRows } from './data'
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -19,36 +19,28 @@ import { FormControl, Input, InputLabel, ListItemText, ListSubheader, MenuItem, 
 
 
 const elements = getRows();
-const times = getTimes();
 const columns = getColumns();
-const days = {
-md: [{}],
-tu: [{}],
-wd: [{}],
-th: [{}],
-fr: [{}],
-st: [{}],
-sd: [{}],
-}
-var rows ={};
-// Parsing
-for (const t of times) {
-    rows[t]=days;
-} 
+
+var rows = {};
+//Parsing
 
 for (const elem of elements) {
-    rows[elem.timeGroup][elem.week_day].push(elem);
+    const val = rows[elem.timeGroup];
+    if (val === undefined) {
+        rows[elem.timeGroup] = {};
+        rows[elem.timeGroup][elem.week_day] = [elem];
+    } else {
+        rows[elem.timeGroup][elem.week_day].push(elem);
+    }
 }
-alert(rows['14:00']['tu']);
 
-
-
+const times = Object.keys(rows);
 const gyms = getGyms();
 
 function CellFill(props) {
     const { event } = props;
     if (props.stateDifficulty[event.difficulty] === true) {
-        if ((props.personName.length === 0) ||  (props.personName.indexOf(event.title) > -1)) {
+        if ((props.personName.length === 0) || (props.personName.indexOf(event.title) > -1)) {
             return (
                 <Grid item alignContent="center">
                     <GymCard lesson={event} />
@@ -107,10 +99,9 @@ function Row(props) {
                 </TableCell>
 
                 {columns.map((column) => {
-                    const value = row[column.id];
                     return (
                         <TableCell key={column.id} className={classes.root} >
-                            {typeof value === 'object' ? <CellContent cell={value} stateDifficulty={props.stateDifficulty} personName={props.personName} /> : ''}
+                            { column.id in row ? <CellContent cell={row[column.id]} stateDifficulty={props.stateDifficulty} personName={props.personName} /> : <CellContent cell={[{}]} stateDifficulty={props.stateDifficulty} personName={props.personName} /> }
                         </TableCell>
                     );
                 })}
@@ -257,12 +248,12 @@ export default function MyTable() {
                     <StickyContainer className="container">
                         <Sticky>
                             {({ style }) => (
-                                <HeadofTable style={{...style, zIndex: 100}} columns={columns} />
+                                <HeadofTable style={{ ...style, zIndex: 100 }} columns={columns} />
                             )}
                         </Sticky>
                         <TableBody>
                             {times.map((time) => (
-                                <Row row={rows[time]} time={time}  stateDifficulty={stateDifficulty} personName={personName} />
+                                <Row row={rows[time]} time={time} stateDifficulty={stateDifficulty} personName={personName} />
                             ))}
                         </TableBody>
                     </StickyContainer>
