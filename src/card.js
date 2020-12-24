@@ -6,7 +6,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Badge, Button, CardActionArea, Dialog, Divider, Grid, Paper } from '@material-ui/core';
-import { cangeVacant } from './data';
 import CustomizedDialog from './CustomizedDialog';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import { grey } from '@material-ui/core/colors';

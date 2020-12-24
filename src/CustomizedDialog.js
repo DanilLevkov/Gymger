@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AppBar, Avatar, Grid, Tab, Tabs, Typography } from '@material-ui/core';
-import { getCoach } from './data';
+import { getCoach } from './mytable';
 import PropTypes from 'prop-types';
 import SwipeableViews from 'react-swipeable-views';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -66,7 +66,6 @@ export default function CustomizedDialog(props) {
     const { long_info, coach_id } = props;
     const coach = getCoach(coach_id);
     const ava = (typeof coach.avatar !== "undefined") ? coach.avatar : "https://www.hausarzt-albers.de/wp-content/uploads/2016/08/no-avatar-m.jpg";
-
     const theme = useTheme();
     const [value, setValue] = React.useState(0);
 

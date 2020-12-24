@@ -3,9 +3,9 @@
 export function cangeVacant(id, value) {
 }
 
-export function getCoach(id) {
+/* export function getCoach(id) {
   return coaches[id];
-}
+} */
 
 const coaches = [
   {

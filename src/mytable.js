@@ -149,6 +149,18 @@ const MenuProps = {
     }
 };
 
+var coaches = [];
+function setCoaches(tmp){
+    coaches = tmp;
+}
+export function getCoach(id) {
+    for (var item of coaches){
+        if (item.id === id){
+            return item;
+        }
+    }
+}
+
 
 
 export default function MyTable() {
@@ -175,7 +187,23 @@ export default function MyTable() {
                     alert(error);
                 }
             )
+        
+            fetch('https://78qhmysrfl.execute-api.us-east-1.amazonaws.com/wev')
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    setCoaches(result);
+                },
+                // Примечание: важно обрабатывать ошибки именно здесь, а не в блоке catch(),
+                // чтобы не перехватывать исключения из ошибок в самих компонентах.
+                (error) => {
+                    alert(error);
+                }
+            )
+
     }, [])
+
+
     
     const rows = Parsing(elements);
     const times = Object.keys(rows).sort();
