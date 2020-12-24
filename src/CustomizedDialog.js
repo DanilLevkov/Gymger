@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { AppBar, Avatar, Grid, Tab, Tabs, Typography } from '@material-ui/core';
-import { getCoach } from './mytable';
+import { getCoach } from './Blog';
 import PropTypes from 'prop-types';
 import SwipeableViews from 'react-swipeable-views';
 import { makeStyles, useTheme } from '@material-ui/core/styles';

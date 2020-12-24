@@ -18,26 +18,6 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { FormControl, Input, InputLabel, ListItemText, ListSubheader, MenuItem, Select } from '@material-ui/core';
 
 
-const columns = getColumns();
-function Parsing(elements) {
-    var rows = {};
-    //Parsing
-    for (const elem of elements) {
-        const val = rows[elem.timeGroup];
-        if (val === undefined) {
-            rows[elem.timeGroup] = {};
-            rows[elem.timeGroup][elem.week_day] = [elem];
-        } else {
-            if (elem.week_day in rows[elem.timeGroup]) {
-                rows[elem.timeGroup][elem.week_day].push(elem);
-            } else{
-                rows[elem.timeGroup][elem.week_day] = [elem];
-            }
-        }
-    }
-    return rows;
-}
-
 
 const gyms = getGyms();
 
@@ -149,64 +129,20 @@ const MenuProps = {
     }
 };
 
-var coaches = [];
-function setCoaches(tmp){
-    coaches = tmp;
-}
-export function getCoach(id) {
-    for (var item of coaches){
-        if (item.id === id){
-            return item;
-        }
-    }
-}
+const columns = getColumns();
 
 
-
-export default function MyTable() {
+export default function MyTable(props) {
+    const {rows, times} = props;
     const classes2 = TableStyles();
     const classes = useStyles();
     const [personName, setPersonName] = React.useState([]);
-    const [elements, setelements] = React.useState([]);
     const [stateDifficulty, setState] = React.useState({
         little: true,
         middle: true,
         big: true,
     });
-
-    useEffect(() => {
-        fetch('https://qxrlui5g98.execute-api.us-east-1.amazonaws.com/MyStage')
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    setelements(result);
-                },
-                // Примечание: важно обрабатывать ошибки именно здесь, а не в блоке catch(),
-                // чтобы не перехватывать исключения из ошибок в самих компонентах.
-                (error) => {
-                    alert(error);
-                }
-            )
-        
-            fetch('https://78qhmysrfl.execute-api.us-east-1.amazonaws.com/wev')
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    setCoaches(result);
-                },
-                // Примечание: важно обрабатывать ошибки именно здесь, а не в блоке catch(),
-                // чтобы не перехватывать исключения из ошибок в самих компонентах.
-                (error) => {
-                    alert(error);
-                }
-            )
-
-    }, [])
-
-
     
-    const rows = Parsing(elements);
-    const times = Object.keys(rows).sort();
     const changesDifficulty = (event) => {
         setState({ ...stateDifficulty, [event.target.name]: event.target.checked });
     };
