@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -18,23 +18,27 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { FormControl, Input, InputLabel, ListItemText, ListSubheader, MenuItem, Select } from '@material-ui/core';
 
 
-const elements = getRows();
 const columns = getColumns();
-
-var rows = {};
-//Parsing
-
-for (const elem of elements) {
-    const val = rows[elem.timeGroup];
-    if (val === undefined) {
-        rows[elem.timeGroup] = {};
-        rows[elem.timeGroup][elem.week_day] = [elem];
-    } else {
-        rows[elem.timeGroup][elem.week_day].push(elem);
+function Parsing(elements) {
+    var rows = {};
+    //Parsing
+    for (const elem of elements) {
+        const val = rows[elem.timeGroup];
+        if (val === undefined) {
+            rows[elem.timeGroup] = {};
+            rows[elem.timeGroup][elem.week_day] = [elem];
+        } else {
+            if (elem.week_day in rows[elem.timeGroup]) {
+                rows[elem.timeGroup][elem.week_day].push(elem);
+            } else{
+                rows[elem.timeGroup][elem.week_day] = [elem];
+            }
+        }
     }
+    return rows;
 }
 
-const times = Object.keys(rows);
+
 const gyms = getGyms();
 
 function CellFill(props) {
@@ -101,7 +105,7 @@ function Row(props) {
                 {columns.map((column) => {
                     return (
                         <TableCell key={column.id} className={classes.root} >
-                            { column.id in row ? <CellContent cell={row[column.id]} stateDifficulty={props.stateDifficulty} personName={props.personName} /> : <CellContent cell={[{}]} stateDifficulty={props.stateDifficulty} personName={props.personName} /> }
+                            { column.id in row ? <CellContent cell={row[column.id]} stateDifficulty={props.stateDifficulty} personName={props.personName} /> : <CellContent cell={[{}]} stateDifficulty={props.stateDifficulty} personName={props.personName} />}
                         </TableCell>
                     );
                 })}
@@ -151,12 +155,30 @@ export default function MyTable() {
     const classes2 = TableStyles();
     const classes = useStyles();
     const [personName, setPersonName] = React.useState([]);
+    const [elements, setelements] = React.useState([]);
     const [stateDifficulty, setState] = React.useState({
         little: true,
         middle: true,
         big: true,
     });
 
+    useEffect(() => {
+        fetch('https://qxrlui5g98.execute-api.us-east-1.amazonaws.com/MyStage')
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    setelements(result);
+                },
+                // Примечание: важно обрабатывать ошибки именно здесь, а не в блоке catch(),
+                // чтобы не перехватывать исключения из ошибок в самих компонентах.
+                (error) => {
+                    alert(error);
+                }
+            )
+    }, [])
+    
+    const rows = Parsing(elements);
+    const times = Object.keys(rows).sort();
     const changesDifficulty = (event) => {
         setState({ ...stateDifficulty, [event.target.name]: event.target.checked });
     };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Collapse from '@material-ui/core/Collapse';
@@ -58,17 +58,34 @@ export default function GymCard(props) {
     const [clicked, setClicked] = React.useState(false);
     const isVacant = (typeof lesson['vacant'] !== "undefined") ? true : false;
     const [vacant, setVacant] = React.useState(lesson.vacant);
+
+    function updateItem(_id, _title, _value) {
+        fetch("https://qxrlui5g98.execute-api.us-east-1.amazonaws.com/Mynewupdate", {
+            method: 'POST',
+            body: JSON.stringify({ ID: _id, title: _title, value:  _value})
+        }).then(res => res.json())
+        .then(
+            (result) => {
+            },
+            // Примечание: важно обрабатывать ошибки именно здесь, а не в блоке catch(),
+            // чтобы не перехватывать исключения из ошибок в самих компонентах.
+            (error) => {
+                alert(error);
+            }
+        );
+    }
+
     function onButtom(event) {
         event.stopPropagation();
+        updateItem(lesson.id,lesson.title,vacant - 1);
         setVacant(vacant - 1);
         setClicked(true);
-        cangeVacant(lesson.id, -1); // Изменение количества вакантных мест
     }
     function offButtom(event) {
         event.stopPropagation();
+        updateItem(lesson.id,lesson.title,vacant + 1);
         setVacant(vacant + 1);
         setClicked(false);
-        cangeVacant(lesson.id, 1);
     }
     function changeButtom() {
         if(!isVacant){
