@@ -13,7 +13,8 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(2),
     },
     contaner: {
-        padding: theme.spacing(2),
+        padding: theme.spacing(3),
+        spacing: theme.spacing(1),
     }
 }));
 
@@ -48,19 +49,29 @@ const days = Object.keys(WeekMap);
 export default function CreateNew() {
     const classes = useStyles();
     const [gofuther, setGofuther] = React.useState(false);
+    const [expand, setExpand] = React.useState(false);
     const [gym, setGym] = React.useState({
-        title: " Pilates",
+        title: "",
         week_day: "",
         time: "",
         timeGroup: "",
         difficulty: "",
-        duration: 55,
+        vacant: 0,
+        duration: 0,
         coach_id: 2,
         hall: "Зал 1",
         long_info: "«Вы молоды настолько, насколько молод Ваш позвоночник» — Дж. Пилатес. Укрепление позвоночника, коррекция осанки, улучшение работы внутренних органов – основа здорового организма и хорошего самочувствия. Движения медленные и плавные, без нагрузки на суставы.",
         short_info: "#укрепляем позвоночник #без нагрузки на суставы",
-        vacant: 11,
     });
+
+    useEffect(() => {
+        if (gym.week_day !== "" && gym.time !== "") {
+            setGofuther(true);
+        } else{
+            setGofuther(false);
+            setExpand(false);
+        }
+    }, [gym.week_day, gym.time, gym.title])
 
     const handleChange = (event) => {
         const name = event.target.name;
@@ -75,16 +86,16 @@ export default function CreateNew() {
             "time": event.target.value,
             "timeGroup": event.target.value,
         });
-        setGofuther(false);
     };
 
     const Then = (event) => {
-        setGofuther(true);
+        setGofuther(false);
+        setExpand(true);
     };
 
     return (
-        <Container >
-            <Grid className={classes.contaner} container alignItems="center" justify="space-between">
+        <Grid container>
+            <Grid container className={classes.contaner} alignItems="center" justify="space-between">
                 <Grid item>
                     <Typography variant="h5">
                         Введите, чтобы продолжить:
@@ -99,13 +110,13 @@ export default function CreateNew() {
                         <Select
                             native
                             value={gym.week_day}
-                            onChange={(event) => { handleChange(event); setGofuther(false); }}
+                            onChange={handleChange}
                             inputProps={{
                                 name: 'week_day',
                                 id: 'week_day-native-simple',
                             }}
                         >
-                            <option aria-label="None" value="" />
+                            {(!expand)?  <option aria-label="None" value="" /> : <></>}
                             {days.map((day) => (
                                 <option value={day}>{WeekMap[day]}</option>
                             ))
@@ -119,13 +130,13 @@ export default function CreateNew() {
                         <Select
                             native
                             value={gym.time}
-                            onChange={ChangeTime}
+                            onChange={(event) => { ChangeTime(event)}}
                             inputProps={{
                                 name: 'time',
                                 id: 'week_day-native-simple',
                             }}
                         >
-                            <option aria-label="None" value="" />
+                             {(!expand)?  <option aria-label="None" value="" /> : <></>}
                             {times.map((time) => (
                                 <option value={time}>{time}</option>
                             ))
@@ -134,17 +145,17 @@ export default function CreateNew() {
                     </FormControl>
                 </Grid>
                 <Grid item>
-                    <Button disabled={gofuther} variant="contained" color="primary" onClick={Then}>
+                    <Button disabled={!gofuther} variant="contained" color="primary" onClick={Then}>
                         Подтвердить
-                        </Button>
+                    </Button>
                 </Grid>
             </Grid>
-            {(gofuther) ?
+            {(expand) ?
                 <Futher gym={gym} handleChange={handleChange} />
                 :
                 <></>
             }
-        </Container>
+        </Grid >
     )
 }
 
@@ -153,10 +164,11 @@ const useStyles2 = makeStyles((theme) => ({
         align: "center"
     },
     contaner: {
-        padding: theme.spacing(1),
+        padding: theme.spacing(3),
     },
     formControl: {
         minWidth: 200,
+        margin: theme.spacing(1),
     },
     root: {
         flexGrow: 1,
@@ -172,59 +184,124 @@ const difficulty = {
 function Futher(props) {
     const classes = useStyles2();
     const { gym, handleChange } = props;
+    const [halls, setHalls] = React.useState([]);
+    const [coaches, setCoaches] = React.useState([]);
+
+    useEffect(() => {
+        fetch('https://qxrlui5g98.execute-api.us-east-1.amazonaws.com/halls')
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    setHalls(result);
+                },
+                // Примечание: важно обрабатывать ошибки именно здесь, а не в блоке catch(),
+                // чтобы не перехватывать исключения из ошибок в самих компонентах.
+                (error) => {
+                    alert(error);
+                }
+            )
+
+        fetch('https://78qhmysrfl.execute-api.us-east-1.amazonaws.com/wev')
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    setCoaches(result);
+                },
+                // Примечание: важно обрабатывать ошибки именно здесь, а не в блоке catch(),
+                // чтобы не перехватывать исключения из ошибок в самих компонентах.
+                (error) => {
+                    alert(error);
+                }
+            )
+
+    }, [])
+    const week = gym.week_day;
+    const time = gym.time;
+
+    let Coach_map = {};
+    for (var item of coaches) {
+        const isVacant = (item.busy[week].indexOf(time) > -1) ? false : true;
+        Coach_map[item.id] = { name: item.name, isVacant: isVacant };
+    }
+
+    let Halls_map = {};
+    for (var item2 of halls) {
+        const isVacant = (item2.busy[week].indexOf(time) > -1) ? false : true;
+        Halls_map[item2.hall] = { isVacant: isVacant };
+    }
+
     return (
         <div className={classes.root}>
             <Divider />
-            <Container className={classes.contaner}>
-                <Typography variant="h5" align="center">
-                    Заполните следующие параметры:
+            <Grid contaner className={classes.contaner} justify="space-between" direction="row">
+                <Grid item xs={12}>
+                    <Typography variant="h5" align="center">
+                        Заполните следующие параметры:
                 </Typography>
-
-                <Grid contaner className={classes.contaner} justify="space-between" direction="row">
-                    <Grid item xs={4}>
-                        <FormControl variant="outlined" className={classes.formControl}>
-                            <InputLabel id="demo-simple-select-outlined-label">Нагрузка</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-outlined-label"
-                                id="demo-simple-select-outlined"
-                                value={gym.difficulty}
-                                onChange={handleChange}
-                                label="Нагрузка"
-                                inputProps={{
-                                    name: 'difficulty',
-                                    id: 'week_day-native-simple',
-                                }}
-                            >
-                                {Object.keys(difficulty).map((diff) => (
-                                    <MenuItem value={diff}>{difficulty[diff]}</MenuItem>
-                                ))
-                                }
-                            </Select>
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <FormControl variant="outlined" className={classes.formControl}>
-                            <InputLabel id="demo-simple-select-outlined-label">Нагрузка</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-outlined-label"
-                                id="demo-simple-select-outlined"
-                                value={gym.difficulty}
-                                onChange={handleChange}
-                                label="Нагрузка"
-                                inputProps={{
-                                    name: 'difficulty',
-                                    id: 'week_day-native-simple',
-                                }}
-                            >
-                                {Object.keys(difficulty).map((diff) => (
-                                    <MenuItem value={diff}>{difficulty[diff]}</MenuItem>
-                                ))
-                                }
-                            </Select>
-                        </FormControl>
-                    </Grid>
                 </Grid>
-            </Container>
+                <FormControl variant="outlined" className={classes.formControl}>
+                    <InputLabel id="demo-simple-select-outlined-label">Нагрузка</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-outlined-label"
+                        id="demo-simple-select-outlined"
+                        value={gym.difficulty}
+                        onChange={handleChange}
+                        label="Нагрузка"
+                        inputProps={{
+                            name: 'difficulty',
+                            id: 'week_day-native-simple',
+                        }}
+                    >
+                        {Object.keys(difficulty).map((diff) => (
+                            <MenuItem value={diff}>{difficulty[diff]}</MenuItem>
+                        ))
+                        }
+                    </Select>
+                </FormControl>
+                <TextField className={classes.formControl} variant="outlined" name="vacant" label="Количество мест" onChange={handleChange} />
+                <TextField className={classes.formControl} variant="outlined" name="duration" label="Продолжительность (мин)" onChange={handleChange} />
+
+                <FormControl variant="outlined" className={classes.formControl}>
+                    <InputLabel id="demo-simple-select-outlined-label">Тренер</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-outlined-label"
+                        id="demo-simple-select-outlined"
+                        value={gym.coach_id}
+                        onChange={handleChange}
+                        label="Тренер"
+                        inputProps={{
+                            name: 'coach_id',
+                            id: 'week_day-native-simple',
+                        }}
+                    >
+                        {Object.keys(Coach_map).map((trainer) => (
+                            <MenuItem value={trainer}>{Coach_map[trainer].name}</MenuItem>
+                        ))
+                        }
+                    </Select>
+                </FormControl>
+
+                <FormControl variant="outlined" className={classes.formControl}>
+                    <InputLabel id="demo-simple-select-outlined-label">Помещение</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-outlined-label"
+                        id="demo-simple-select-outlined"
+                        value={gym.hall}
+                        onChange={handleChange}
+                        label="Помещение"
+                        inputProps={{
+                            name: 'hall',
+                            id: 'week_day-native-simple',
+                        }}
+                    >
+                        {Object.keys(Halls_map).map((hall) => (
+                            <MenuItem value={hall}>{hall}</MenuItem>
+                        ))
+                        }
+                    </Select>
+                </FormControl>
+
+            </Grid>
         </div>
     )
 }
