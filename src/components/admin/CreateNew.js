@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, Divider, FormControl, Grid, InputLabel, Paper, Select, Typography } from '@material-ui/core';
+import { Button, Divider, FormControl, Grid, InputLabel, MenuItem, Paper, Select, TextField, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -49,16 +49,16 @@ export default function CreateNew() {
     const classes = useStyles();
     const [gofuther, setGofuther] = React.useState(false);
     const [gym, setGym] = React.useState({
+        title: " Pilates",
         week_day: "",
         time: "",
         timeGroup: "",
-        coach_id: 2,
-        difficulty: "middle",
+        difficulty: "",
         duration: 55,
+        coach_id: 2,
         hall: "Зал 1",
         long_info: "«Вы молоды настолько, насколько молод Ваш позвоночник» — Дж. Пилатес. Укрепление позвоночника, коррекция осанки, улучшение работы внутренних органов – основа здорового организма и хорошего самочувствия. Движения медленные и плавные, без нагрузки на суставы.",
         short_info: "#укрепляем позвоночник #без нагрузки на суставы",
-        title: " Pilates",
         vacant: 11,
     });
 
@@ -83,12 +83,15 @@ export default function CreateNew() {
     };
 
     return (
-        <Container className={classes.contaner}>
-            <Grid container alignItems="center" justify="space-between">
+        <Container >
+            <Grid className={classes.contaner} container alignItems="center" justify="space-between">
                 <Grid item>
-                    <Typography>
-                        Установите день недели и время:
+                    <Typography variant="h5">
+                        Введите, чтобы продолжить:
                     </Typography>
+                </Grid>
+                <Grid item>
+                    <TextField name="title" label="Название" onChange={handleChange} />
                 </Grid>
                 <Grid item>
                     <FormControl className={classes.formControl}>
@@ -96,7 +99,7 @@ export default function CreateNew() {
                         <Select
                             native
                             value={gym.week_day}
-                            onChange={(event) => {handleChange(event); setGofuther(false);}}
+                            onChange={(event) => { handleChange(event); setGofuther(false); }}
                             inputProps={{
                                 name: 'week_day',
                                 id: 'week_day-native-simple',
@@ -109,6 +112,8 @@ export default function CreateNew() {
                             }
                         </Select>
                     </FormControl>
+                </Grid>
+                <Grid item>
                     <FormControl className={classes.formControl}>
                         <InputLabel htmlFor="age-native-simple">Время</InputLabel>
                         <Select
@@ -129,16 +134,13 @@ export default function CreateNew() {
                     </FormControl>
                 </Grid>
                 <Grid item>
-                        <Button disabled={gofuther} variant="contained" color="primary" onClick={Then}>
-                            Подтвердить
+                    <Button disabled={gofuther} variant="contained" color="primary" onClick={Then}>
+                        Подтвердить
                         </Button>
                 </Grid>
             </Grid>
             {(gofuther) ?
-                <>
-                <Divider/>
-                <Futher gym={gym} setGym={setGym} />
-                </>
+                <Futher gym={gym} handleChange={handleChange} />
                 :
                 <></>
             }
@@ -146,11 +148,83 @@ export default function CreateNew() {
     )
 }
 
+const useStyles2 = makeStyles((theme) => ({
+    typography: {
+        align: "center"
+    },
+    contaner: {
+        padding: theme.spacing(1),
+    },
+    formControl: {
+        minWidth: 200,
+    },
+    root: {
+        flexGrow: 1,
+    },
+}));
+
+const difficulty = {
+    little: "Низкая",
+    middle: "Средняя",
+    big: "Высокая",
+}
+
 function Futher(props) {
-    const {gym, setGym} = props;
-    return(
-        <Grid contaner>
-            
-        </Grid>
+    const classes = useStyles2();
+    const { gym, handleChange } = props;
+    return (
+        <div className={classes.root}>
+            <Divider />
+            <Container className={classes.contaner}>
+                <Typography variant="h5" align="center">
+                    Заполните следующие параметры:
+                </Typography>
+
+                <Grid contaner className={classes.contaner} justify="space-between" direction="row">
+                    <Grid item xs={4}>
+                        <FormControl variant="outlined" className={classes.formControl}>
+                            <InputLabel id="demo-simple-select-outlined-label">Нагрузка</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-outlined-label"
+                                id="demo-simple-select-outlined"
+                                value={gym.difficulty}
+                                onChange={handleChange}
+                                label="Нагрузка"
+                                inputProps={{
+                                    name: 'difficulty',
+                                    id: 'week_day-native-simple',
+                                }}
+                            >
+                                {Object.keys(difficulty).map((diff) => (
+                                    <MenuItem value={diff}>{difficulty[diff]}</MenuItem>
+                                ))
+                                }
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <FormControl variant="outlined" className={classes.formControl}>
+                            <InputLabel id="demo-simple-select-outlined-label">Нагрузка</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-outlined-label"
+                                id="demo-simple-select-outlined"
+                                value={gym.difficulty}
+                                onChange={handleChange}
+                                label="Нагрузка"
+                                inputProps={{
+                                    name: 'difficulty',
+                                    id: 'week_day-native-simple',
+                                }}
+                            >
+                                {Object.keys(difficulty).map((diff) => (
+                                    <MenuItem value={diff}>{difficulty[diff]}</MenuItem>
+                                ))
+                                }
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                </Grid>
+            </Container>
+        </div>
     )
 }
