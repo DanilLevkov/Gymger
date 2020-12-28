@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
-import Header from './Header';
+import Header from '../Header';
 import MyTable from './mytable'
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core';
@@ -59,7 +59,8 @@ function Parsing(elements) {
 }
 
 
-export default function Blog() {
+export default function Blog(props) {
+  const {isLogged} = props;
   const classes = GridStyles();
   
   const [elements, setelements] = React.useState([]);
@@ -100,16 +101,15 @@ export default function Blog() {
     <React.Fragment>
       <CssBaseline />
       <Container className={classes.headContaner}>
-        <Header />
+        <Header isLogged={isLogged} />
       </Container>
       <Container className={classes.mainContaner}>
         <Paper elevation="3" className={classes.paper}>
-              <MyTable rows={rows} times={times} />
+              <MyTable rows={rows} times={times} isLogged={isLogged} />
         </Paper>
       </Container>
 
       <Paper width="100%" className={classes.bottomPaper}>
-        Some add info
     </Paper>
     </React.Fragment>
   );

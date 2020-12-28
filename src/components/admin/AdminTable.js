@@ -22,12 +22,12 @@ import { FormControl, Input, InputLabel, ListItemText, ListSubheader, MenuItem, 
 const gyms = getGyms();
 
 function CellFill(props) {
-    const { event } = props;
+    const { event, isLogged } = props;
     if (props.stateDifficulty[event.difficulty] === true) {
         if ((props.personName.length === 0) || (props.personName.indexOf(event.title) > -1)) {
             return (
                 <Grid item alignContent="center">
-                    <GymCard lesson={event} />
+                    <GymCard isLogged={isLogged} lesson={event} />
                 </Grid>
             )
         } else {
@@ -50,12 +50,12 @@ function CellFill(props) {
 
 
 function CellContent(props) {
-    const { cell } = props;
+    const { cell, isLogged } = props;
     return (
         <React.Fragment>
             <Grid container direction="column" justify="flex-start" alignItems="center" spacing={1} padding={3}>
                 {cell.map((event) => (
-                    <CellFill event={event} stateDifficulty={props.stateDifficulty} personName={props.personName} />
+                    <CellFill isLogged={isLogged} event={event} stateDifficulty={props.stateDifficulty} personName={props.personName} />
                 ))}
             </Grid>
         </React.Fragment>
@@ -74,7 +74,7 @@ const CellStyles = makeStyles({
 
 function Row(props) {
     const classes = CellStyles();
-    const { row, time } = props;
+    const { row, time, isLogged } = props;
     return (
         <React.Fragment>
             <TableRow>
@@ -85,7 +85,7 @@ function Row(props) {
                 {columns.map((column) => {
                     return (
                         <TableCell key={column.id} className={classes.root} >
-                            { column.id in row ? <CellContent cell={row[column.id]} stateDifficulty={props.stateDifficulty} personName={props.personName} /> : <CellContent cell={[{}]} stateDifficulty={props.stateDifficulty} personName={props.personName} />}
+                            { column.id in row ? <CellContent isLogged={isLogged} cell={row[column.id]} stateDifficulty={props.stateDifficulty} personName={props.personName} /> : <CellContent cell={[{}]} stateDifficulty={props.stateDifficulty} personName={props.personName} />}
                         </TableCell>
                     );
                 })}
@@ -132,8 +132,8 @@ const MenuProps = {
 const columns = getColumns();
 
 
-export default function MyTable(props) {
-    const {rows, times} = props;
+export default function MyAdminTable(props) {
+    const { rows, times , isLogged } = props;
     const classes2 = TableStyles();
     const classes = useStyles();
     const [personName, setPersonName] = React.useState([]);
@@ -142,7 +142,7 @@ export default function MyTable(props) {
         middle: true,
         big: true,
     });
-    
+
     const changesDifficulty = (event) => {
         setState({ ...stateDifficulty, [event.target.name]: event.target.checked });
     };
@@ -224,6 +224,22 @@ export default function MyTable(props) {
                                     <ListItemText primary={elem.name} />
                                 </MenuItem>
                             ))}
+
+                            < ListSubheader disableSticky> {gyms[3].type}</ListSubheader>
+                            {gyms[3].items.map((elem) => (
+                                <MenuItem key={elem} value={elem.name}>
+                                    <Checkbox checked={personName.indexOf(elem.name) > -1} />
+                                    <ListItemText primary={elem.name} />
+                                </MenuItem>
+                            ))}
+
+                            < ListSubheader disableSticky> {gyms[4].type}</ListSubheader>
+                            {gyms[4].items.map((elem) => (
+                                <MenuItem key={elem} value={elem.name}>
+                                    <Checkbox checked={personName.indexOf(elem.name) > -1} />
+                                    <ListItemText primary={elem.name} />
+                                </MenuItem>
+                            ))}
                         </Select>
                     </FormControl>
                 </Grid>
@@ -239,7 +255,7 @@ export default function MyTable(props) {
                         </Sticky>
                         <TableBody>
                             {times.map((time) => (
-                                <Row row={rows[time]} time={time} stateDifficulty={stateDifficulty} personName={personName} />
+                                <Row isLogged={isLogged} row={rows[time]} time={time} stateDifficulty={stateDifficulty} personName={personName} />
                             ))}
                         </TableBody>
                     </StickyContainer>

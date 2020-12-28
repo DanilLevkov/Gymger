@@ -31,7 +31,8 @@ const sections = [
   { title: 'Информация', url: '#' },
 ];
 
-export default function Header() {
+export default function Header(props) {
+  const { isLogged } = props;
   const classes = useStyles();
 
   return (
@@ -83,10 +84,15 @@ export default function Header() {
                 <SearchIcon />
               </IconButton>
             </Typography>
-            
-            <Button variant="" href="#" size="small">
-              Войти
+            {(isLogged) ?
+              <Button variant="" href="/" size="small">
+                Выйти
             </Button>
+              :
+              <Button variant="" href="/login" size="small">
+                Войти
+            </Button>
+            }
           </Grid>
         </Grid>
       </Toolbar>

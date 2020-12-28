@@ -48,13 +48,15 @@ const useStyles = makeStyles((theme) => ({
 
 
 
+
 export default function GymCard(props) {
-    const { lesson } = props;
+    const { lesson, isLogged } = props;
     var color2;
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
     const [dialodOpen, setDialod] = React.useState(false);
-    const [clicked, setClicked] = React.useState(false);
+    const UserClicked = localStorage[lesson.id] !== undefined ;
+    const [clicked, setClicked] = React.useState(UserClicked);
     const isVacant = (typeof lesson['vacant'] !== "undefined") ? true : false;
     const [vacant, setVacant] = React.useState(lesson.vacant);
 
@@ -77,16 +79,21 @@ export default function GymCard(props) {
     function onButtom(event) {
         event.stopPropagation();
         updateItem(lesson.id,lesson.title,vacant - 1);
+        localStorage.setItem(lesson.id, true);
         setVacant(vacant - 1);
         setClicked(true);
     }
     function offButtom(event) {
         event.stopPropagation();
         updateItem(lesson.id,lesson.title,vacant + 1);
+        localStorage.removeItem(lesson.id);
         setVacant(vacant + 1);
         setClicked(false);
     }
     function changeButtom() {
+        if(!isLogged){
+            return null;
+        }
         if(!isVacant){
             return null;
         }
