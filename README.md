@@ -1,3 +1,6 @@
+К сожалению, срок доступа к моему аккаунту AWS истек. Поэтому все ссылки в проекте (API) - не действуют.
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
